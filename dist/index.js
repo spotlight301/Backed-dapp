@@ -4,14 +4,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const servidor_1 = __importDefault(require("./clases/servidor"));
-const usuario_1 = __importDefault(require("./rutas/usuario"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const express_1 = __importDefault(require("express"));
+const express_fileupload_1 = __importDefault(require("express-fileupload"));
+const usuario_1 = __importDefault(require("./rutas/usuario"));
+const avisos_1 = __importDefault(require("./rutas/avisos"));
 const servidor = new servidor_1.default();
 servidor.app.use(express_1.default.urlencoded({ extended: true }));
 servidor.app.use(express_1.default.json());
+//configuracion para obtener los archivos que subimos 
+servidor.app.use((0, express_fileupload_1.default)({
+    useTempFiles: true,
+    //tempFileDir : '/tmp/'
+}));
 //rutas de la aplicacion
 servidor.app.use('/usuario', usuario_1.default);
+servidor.app.use('/avisos', avisos_1.default);
 //conecion a base de dato
 mongoose_1.default.connect('mongodb://localhost:27017/veciRed', (err) => {
     if (err)

@@ -1,7 +1,9 @@
 import Servidor from "./clases/servidor";
-import rutasUsuario from "./rutas/usuario";
 import mongoose from 'mongoose';
 import express from "express";
+import fileUpload from 'express-fileupload';
+import rutasUsuario from "./rutas/usuario";
+import rutasAvisos from "./rutas/avisos";
 
 const servidor = new Servidor();
 
@@ -9,9 +11,17 @@ const servidor = new Servidor();
 servidor.app.use(express.urlencoded ({extended: true}));
 servidor.app.use(express.json() );
 
+//configuracion para obtener los archivos que subimos 
+servidor.app.use(fileUpload(
+    {
+        useTempFiles : true,
+        //tempFileDir : '/tmp/'
+    }
+));
 
 //rutas de la aplicacion
 servidor.app.use('/usuario', rutasUsuario);
+servidor.app.use('/avisos', rutasAvisos);
 
 
 
