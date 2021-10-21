@@ -1,6 +1,6 @@
 import  bcrypt  from 'bcrypt';
 //definiremos la estructura de la tabla usuario que ocuparemos en BD
-import {Schema, model} from 'mongoose';
+import {Schema, model, Document} from 'mongoose';
 
 
 const estructuraUsuario= new Schema({
