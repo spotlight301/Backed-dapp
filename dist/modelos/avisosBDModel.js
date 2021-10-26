@@ -15,9 +15,9 @@ const estructuraAvisos = new mongoose_1.Schema({
         type: String,
         required: [true, 'La descripcion es obligatoria']
     },
-    imagenAviso: {
-        type: String,
-    },
+    imagenAviso: [{
+            type: String,
+        }],
     usuario: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'Usuario',

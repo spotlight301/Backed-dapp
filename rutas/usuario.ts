@@ -145,5 +145,16 @@ rutasUsuario.post('/actualizar', verificaToken,(request: any, response: Response
 });
 
 
+rutasUsuario.get('/', [verificaToken], (request: any, response: Response) =>
+{
+    const usuario = request.usuario;
+    
+    response.json({
+        ok: true,
+        usuario
+    })
+})
+
+
 
 export default rutasUsuario;

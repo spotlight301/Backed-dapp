@@ -14,9 +14,9 @@ const estructuraAvisos = new Schema({
         type: String,
         required: [true, 'La descripcion es obligatoria']
     },
-    imagenAviso: {
+    imagenAviso: [{
         type: String,
-    },
+    }],
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario',
@@ -36,7 +36,7 @@ interface IAvisos extends Document{
     fechaCreacion: Date;
     titulo: string;
     descripcion: string;
-    imagenAviso: string;
+    imagenAviso: string[];
     usuario: string;
 
 }
