@@ -2,6 +2,7 @@ import Servidor from "./clases/servidor";
 import mongoose from 'mongoose';
 import express from "express";
 import fileUpload from 'express-fileupload';
+import cors from 'cors';
 import rutasUsuario from "./rutas/usuario";
 import rutasAvisos from "./rutas/avisos";
 
@@ -18,6 +19,9 @@ servidor.app.use(fileUpload(
         //tempFileDir : '/tmp/'
     }
 ));
+
+//Configuración de CORS para que el servidor no bloquee peticiones hTTp de origin !=
+servidor.app.use(cors({origin: true, credentials: true}));
 
 //rutas de la aplicacion
 servidor.app.use('/usuario', rutasUsuario);

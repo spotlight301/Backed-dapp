@@ -7,6 +7,7 @@ const servidor_1 = __importDefault(require("./clases/servidor"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const express_1 = __importDefault(require("express"));
 const express_fileupload_1 = __importDefault(require("express-fileupload"));
+const cors_1 = __importDefault(require("cors"));
 const usuario_1 = __importDefault(require("./rutas/usuario"));
 const avisos_1 = __importDefault(require("./rutas/avisos"));
 const servidor = new servidor_1.default();
@@ -17,6 +18,8 @@ servidor.app.use((0, express_fileupload_1.default)({
 // useTempFiles : true,
 //tempFileDir : '/tmp/'
 }));
+//Configuración de CORS para que el servidor no bloquee peticiones hTTp de origin !=
+servidor.app.use((0, cors_1.default)({ origin: true, credentials: true }));
 //rutas de la aplicacion
 servidor.app.use('/usuario', usuario_1.default);
 servidor.app.use('/avisos', avisos_1.default);
