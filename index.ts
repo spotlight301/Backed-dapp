@@ -14,7 +14,7 @@ servidor.app.use(express.json() );
 //configuracion para obtener los archivos que subimos 
 servidor.app.use(fileUpload(
     {
-        useTempFiles : true,
+        // useTempFiles : true,
         //tempFileDir : '/tmp/'
     }
 ));

@@ -2,9 +2,10 @@ import { Router, Response } from "express";
 import { verificaToken } from '../middlewares/autenticacion';
 import { Avisos } from '../modelos/avisosBDModel';
 import { FileUpload } from '../interfaces/file-upload';
+import FileSystem from '../clases/file-system';
 
 
-
+const fileSystem = new FileSystem();
 const rutasAvisos = Router();
 
 
@@ -15,6 +16,9 @@ rutasAvisos.post('/', [verificaToken], (request: any, response: Response) =>
     //posteriormente sera esta informacion que enviaremos a traves de la funcion create para insertar en la BD
     const body= request.body;
     body.usuario = request.usuario._id;
+
+    const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
+    body.imagenAviso = imagenes;
     //a través de create se nos inserta la informacion en la BD
     Avisos.create(body).then( async avisosBD =>{
 
@@ -57,7 +61,7 @@ rutasAvisos.get('/', async (request: any, response: Response) => {
 
 
 //subir imagenes a BD
-rutasAvisos.post('/subirImagen', [verificaToken], (request: any, response: Response) => {
+rutasAvisos.post('/subirImagen', [verificaToken], async (request: any, response: Response) => {
     //podemos acceder a la propiedad files gracias a fileUpload :p
 
     if(! request.files)
@@ -89,11 +93,25 @@ rutasAvisos.post('/subirImagen', [verificaToken], (request: any, response: Respo
         
     }
 
+    await fileSystem.guardarImagenTemp(archivo, request.usuario._id);
     response.json({
         ok: true,
         archivo: archivo.mimetype
     })
-})
+});
+
+//al definir de esta manera la ruta de nuestro archivo, estamos obligando al servicio
+//a enviar las variables "idUsuario" y "imgAviso"
+rutasAvisos.get('/imagenAviso/:idUsuario/:imgAviso', (request: any, response: Response) =>
+{
+    const idUsuario = request.params.idUsuario;
+    const imgAviso = request.params.imgAviso;
+
+    const rutaFotoBD = fileSystem.getFotoUrl(idUsuario, imgAviso );
+
+    response.sendFile(rutaFotoBD);
+
+});
 
 
 

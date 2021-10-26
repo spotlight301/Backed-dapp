@@ -14,8 +14,8 @@ servidor.app.use(express_1.default.urlencoded({ extended: true }));
 servidor.app.use(express_1.default.json());
 //configuracion para obtener los archivos que subimos 
 servidor.app.use((0, express_fileupload_1.default)({
-    useTempFiles: true,
-    //tempFileDir : '/tmp/'
+// useTempFiles : true,
+//tempFileDir : '/tmp/'
 }));
 //rutas de la aplicacion
 servidor.app.use('/usuario', usuario_1.default);

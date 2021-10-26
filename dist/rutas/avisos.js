@@ -8,10 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const autenticacion_1 = require("../middlewares/autenticacion");
 const avisosBDModel_1 = require("../modelos/avisosBDModel");
+const file_system_1 = __importDefault(require("../clases/file-system"));
+const fileSystem = new file_system_1.default();
 const rutasAvisos = (0, express_1.Router)();
 //crear un nuevo aviso
 rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
@@ -19,6 +24,8 @@ rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
     //posteriormente sera esta informacion que enviaremos a traves de la funcion create para insertar en la BD
     const body = request.body;
     body.usuario = request.usuario._id;
+    const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
+    body.imagenAviso = imagenes;
     //a través de create se nos inserta la informacion en la BD
     avisosBDModel_1.Avisos.create(body).then((avisosBD) => __awaiter(void 0, void 0, void 0, function* () {
         //avisosBD.populate('usuario').execPopulate();
@@ -50,7 +57,7 @@ rutasAvisos.get('/', (request, response) => __awaiter(void 0, void 0, void 0, fu
     });
 }));
 //subir imagenes a BD
-rutasAvisos.post('/subirImagen', [autenticacion_1.verificaToken], (request, response) => {
+rutasAvisos.post('/subirImagen', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     //podemos acceder a la propiedad files gracias a fileUpload :p
     if (!request.files) {
         return response.status(400).json({
@@ -73,9 +80,18 @@ rutasAvisos.post('/subirImagen', [autenticacion_1.verificaToken], (request, resp
             mensaje: 'Error, archivo ingresado no es imagen'
         });
     }
+    yield fileSystem.guardarImagenTemp(archivo, request.usuario._id);
     response.json({
         ok: true,
         archivo: archivo.mimetype
     });
+}));
+//al definir de esta manera la ruta de nuestro archivo, estamos obligando al servicio
+//a enviar las variables "idUsuario" y "imgAviso"
+rutasAvisos.get('/imagenAviso/:idUsuario/:imgAviso', (request, response) => {
+    const idUsuario = request.params.idUsuario;
+    const imgAviso = request.params.imgAviso;
+    const rutaFotoBD = fileSystem.getFotoUrl(idUsuario, imgAviso);
+    response.sendFile(rutaFotoBD);
 });
 exports.default = rutasAvisos;
