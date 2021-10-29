@@ -5,6 +5,7 @@ import fileUpload from 'express-fileupload';
 import cors from 'cors';
 import rutasUsuario from "./rutas/usuario";
 import rutasAvisos from "./rutas/avisos";
+import rutasComunidad from "./rutas/comunidad";
 
 const servidor = new Servidor();
 
@@ -26,6 +27,7 @@ servidor.app.use(cors({origin: true, credentials: true}));
 //rutas de la aplicacion
 servidor.app.use('/usuario', rutasUsuario);
 servidor.app.use('/avisos', rutasAvisos);
+servidor.app.use('/comunidad', rutasComunidad);
 
 
 

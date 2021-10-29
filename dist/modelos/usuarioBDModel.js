@@ -32,7 +32,11 @@ const estructuraUsuario = new mongoose_1.Schema({
     rol: {
         type: Number,
         default: 1
-    }
+    },
+    comunidad: [{
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Comunidad'
+        }]
 });
 estructuraUsuario.method('checkPass', function (password = '') {
     if (bcrypt_1.default.compareSync(password, this.password)) {
