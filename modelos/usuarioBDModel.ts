@@ -36,7 +36,11 @@ const estructuraUsuario= new Schema({
     {
         type: Number,
         default: 1
-    }
+    },
+    comunidad:[{
+        type: Schema.Types.ObjectId,
+        ref: 'Comunidad'
+    }]
 
 
 });
@@ -58,6 +62,7 @@ interface IUsuario extends Document {
     password: string;
     imagenPerfil: string;
     rol: number;
+    comunidad: string[];
 
     checkPass(password: string): boolean;
 

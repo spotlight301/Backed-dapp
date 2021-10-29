@@ -5,7 +5,7 @@ exports.Avisos = void 0;
 const mongoose_1 = require("mongoose");
 const estructuraAvisos = new mongoose_1.Schema({
     fechaCreacion: {
-        type: Date
+        type: String
     },
     titulo: {
         type: String,
@@ -22,10 +22,23 @@ const estructuraAvisos = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'Usuario',
         required: [true, 'Los avisos deben ser realizados por un miembro']
+    },
+    comunidad: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'Comunidad'
+    },
+    tipoAviso: {
+        type: Number,
+        default: 4
     }
 });
 estructuraAvisos.pre('save', function (next) {
-    this.fechaCreacion = new Date();
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    this.fechaCreacion = mm + '/' + dd + '/' + yyyy;
+    //this.fechaCreacion = new Date();
     next();
 });
 exports.Avisos = (0, mongoose_1.model)('Avisos', estructuraAvisos);

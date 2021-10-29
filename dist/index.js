@@ -10,6 +10,7 @@ const express_fileupload_1 = __importDefault(require("express-fileupload"));
 const cors_1 = __importDefault(require("cors"));
 const usuario_1 = __importDefault(require("./rutas/usuario"));
 const avisos_1 = __importDefault(require("./rutas/avisos"));
+const comunidad_1 = __importDefault(require("./rutas/comunidad"));
 const servidor = new servidor_1.default();
 servidor.app.use(express_1.default.urlencoded({ extended: true }));
 servidor.app.use(express_1.default.json());
@@ -23,6 +24,7 @@ servidor.app.use((0, cors_1.default)({ origin: true, credentials: true }));
 //rutas de la aplicacion
 servidor.app.use('/usuario', usuario_1.default);
 servidor.app.use('/avisos', avisos_1.default);
+servidor.app.use('/comunidad', comunidad_1.default);
 //conecion a base de dato
 mongoose_1.default.connect('mongodb://localhost:27017/veciRed', (err) => {
     if (err)
