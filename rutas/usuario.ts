@@ -28,12 +28,14 @@ rutasUsuario.post('/login', (request: Request, response: Response) =>
                 nombre:  usuarioBD.nombre,
                 email: usuarioBD.email,
                 imagenPerfil: usuarioBD.imagenPerfil,
-                rol: usuarioBD.rol
+                rol: usuarioBD.rol,
+                comunidad: usuarioBD.comunidad
 
             })
             response.json({
                 ok: true,
                 token: Usuariotoken
+                
             }); 
 
         }else{
@@ -57,7 +59,7 @@ rutasUsuario.post('/crear', (request: Request, response: Response) =>
         password    : bcrypt.hashSync(request.body.password, 10),
         imagenPerfil: request.body.imagenPerfil,
         rol         : request.body.rol,
-        comunidad: request.body.comunidad
+        comunidad   : request.body.comunidad
 
     }
 

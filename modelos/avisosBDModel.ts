@@ -40,7 +40,7 @@ estructuraAvisos.pre<IAvisos>('save', function( next){
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
 
-    this.fechaCreacion = mm + '/' + dd + '/' + yyyy;
+    this.fechaCreacion = dd + '/' + mm + '/' + yyyy;
     
     //this.fechaCreacion = new Date();
     next();
