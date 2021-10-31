@@ -27,7 +27,8 @@ rutasUsuario.post('/login', (request, response) => {
                 nombre: usuarioBD.nombre,
                 email: usuarioBD.email,
                 imagenPerfil: usuarioBD.imagenPerfil,
-                rol: usuarioBD.rol
+                rol: usuarioBD.rol,
+                comunidad: usuarioBD.comunidad
             });
             response.json({
                 ok: true,
