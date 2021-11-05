@@ -5,15 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
 const fs_1 = __importDefault(require("fs"));
+const uniqid_1 = __importDefault(require("uniqid"));
 class FileSystem {
     constructor() { }
     ;
     guardarImagenTemp(file, idUsuario) {
         return new Promise((resolve, reject) => {
+            //Crear carpeta
             const path = this.crearCarpetaUsuario(idUsuario);
             // console.log(file.name);
             // console.log(path);
-            file.mv(`${path}/${file.name}`, (err) => {
+            //Nombre archivo
+            const nombreArchivo = this.generarNombreUnico(file.name);
+            //Mover la imagen a la carpeta temp
+            file.mv(`${path}/${nombreArchivo}`, (err) => {
                 if (err) {
                     reject(err);
                 }
@@ -22,6 +27,12 @@ class FileSystem {
                 }
             });
         });
+    }
+    generarNombreUnico(nombreOriginal) {
+        const nombreArr = nombreOriginal.split('.');
+        const extension = nombreArr[nombreArr.length - 1];
+        const idUnico = uniqid_1.default();
+        return `${idUnico}.${extension}`;
     }
     crearCarpetaUsuario(idUsuario) {
         const rutaUsuario = path_1.default.resolve(__dirname, '../imagenesAvisos/', idUsuario);

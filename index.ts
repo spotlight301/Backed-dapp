@@ -6,6 +6,7 @@ import cors from 'cors';
 import rutasUsuario from "./rutas/usuario";
 import rutasAvisos from "./rutas/avisos";
 import rutasComunidad from "./rutas/comunidad";
+import rutasAcuerdos from "./rutas/acuerdos";
 
 const servidor = new Servidor();
 
@@ -28,6 +29,7 @@ servidor.app.use(cors({origin: true, credentials: true}));
 servidor.app.use('/usuario', rutasUsuario);
 servidor.app.use('/avisos', rutasAvisos);
 servidor.app.use('/comunidad', rutasComunidad);
+servidor.app.use('/acuerdos', rutasAcuerdos);
 
 
 

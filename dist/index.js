@@ -11,20 +11,22 @@ const cors_1 = __importDefault(require("cors"));
 const usuario_1 = __importDefault(require("./rutas/usuario"));
 const avisos_1 = __importDefault(require("./rutas/avisos"));
 const comunidad_1 = __importDefault(require("./rutas/comunidad"));
+const acuerdos_1 = __importDefault(require("./rutas/acuerdos"));
 const servidor = new servidor_1.default();
 servidor.app.use(express_1.default.urlencoded({ extended: true }));
 servidor.app.use(express_1.default.json());
 //configuracion para obtener los archivos que subimos 
-servidor.app.use((0, express_fileupload_1.default)({
+servidor.app.use(express_fileupload_1.default({
 // useTempFiles : true,
 //tempFileDir : '/tmp/'
 }));
 //Configuración de CORS para que el servidor no bloquee peticiones hTTp de origin !=
-servidor.app.use((0, cors_1.default)({ origin: true, credentials: true }));
+servidor.app.use(cors_1.default({ origin: true, credentials: true }));
 //rutas de la aplicacion
 servidor.app.use('/usuario', usuario_1.default);
 servidor.app.use('/avisos', avisos_1.default);
 servidor.app.use('/comunidad', comunidad_1.default);
+servidor.app.use('/acuerdos', acuerdos_1.default);
 //conecion a base de dato
 mongoose_1.default.connect('mongodb://localhost:27017/veciRed', (err) => {
     if (err)

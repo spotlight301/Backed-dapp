@@ -10,4 +10,4 @@ const estructuraComunidad = new mongoose_1.Schema({
         default: 'Default Comunity '
     }
 });
-exports.Comunidad = (0, mongoose_1.model)('Comunidad', estructuraComunidad);
+exports.Comunidad = mongoose_1.model('Comunidad', estructuraComunidad);

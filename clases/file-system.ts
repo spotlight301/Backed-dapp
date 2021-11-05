@@ -1,6 +1,7 @@
 import { FileUpload } from '../interfaces/file-upload';
 import path from 'path';
 import fs from 'fs';
+import uniqid from 'uniqid';
 
 
 export default class FileSystem {
@@ -11,12 +12,16 @@ export default class FileSystem {
 
         return new Promise((resolve: any, reject) =>
         {
-
+            //Crear carpeta
             const path = this.crearCarpetaUsuario(idUsuario);
             // console.log(file.name);
             // console.log(path);
-    
-            file.mv(`${path}/${file.name}`, (err : any) =>
+
+            //Nombre archivo
+            const nombreArchivo = this.generarNombreUnico(file.name);
+            
+            //Mover la imagen a la carpeta temp
+            file.mv(`${path}/${nombreArchivo}`, (err : any) =>
             {
                 if(err)
                 {
@@ -34,6 +39,17 @@ export default class FileSystem {
        
 
         
+    }
+
+    private generarNombreUnico( nombreOriginal: string){
+
+        const nombreArr = nombreOriginal.split('.');
+        const extension = nombreArr[nombreArr.length - 1];
+
+        const idUnico = uniqid();
+
+        return `${idUnico}.${extension}`;
+
     }
 
     private crearCarpetaUsuario(idUsuario: string)
