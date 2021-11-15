@@ -13,14 +13,14 @@ const estructuraAcuerdos = new Schema({
         },
         fecha: {
             type: Date
-        },/* 
+        },
         hora:{
            type: Date
-        }, */
+        },
         imagenAcuerdo: [{
             type: String
         }],
-         opciones:[{
+        opciones:[{
             titulo: {
                 type: String,
                 //required: [true, 'El titulo es obligatorio']
@@ -28,6 +28,9 @@ const estructuraAcuerdos = new Schema({
             descripcion: {
                 type: String,
                 //required: [true, 'La descripcion es obligatoria']
+            },
+            votos:{
+                type: Number
             }
         }],
         usuario: {
@@ -48,11 +51,20 @@ interface IAcuerdos extends Document{
     titulo: string;
     descripcion: string;
     fecha: Date;
-    //hora: Date;
+    hora: Date;
     imagenAcuerdo: string;
-    opciones: string[];
+    opciones: IOpciones[];
     usuario: string;
     comunidad: string;
+    
+}
+
+
+interface IOpciones extends Document{
+
+    titulo: string;
+    descripcion: string;
+    votos: number;
 }
 
 export const Acuerdos= model <IAcuerdos>('Acuerdos', estructuraAcuerdos);

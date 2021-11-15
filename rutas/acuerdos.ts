@@ -25,8 +25,7 @@ rutasAcuerdos.post('/', [verificaToken], (request: any, response: Response) => {
         await acuerdosDB.populate({path: 'comunidad'})
         response.json({
             ok: true,
-            //body,
-            acuerdosDB
+            acuerdo: acuerdosDB
             
         })
 
@@ -45,11 +44,12 @@ rutasAcuerdos.get('/', [verificaToken], async (request: any, response: Response)
     skip = skip * 10;
 
 
-    const acuerdosPublicados = await Acuerdos.find()
+    const acuerdosPublicados = await Acuerdos.find({comunidad: request.usuario.comunidad})
                                              .sort({_id:-1})
                                              .skip(skip)
                                              .limit(10)
                                              .populate({path:'usuario',select: '-password'})
+                                             .populate({path:'comunidad'})
                                              .exec();
 
     response.json({

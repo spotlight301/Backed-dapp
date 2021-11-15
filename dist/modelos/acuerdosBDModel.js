@@ -14,6 +14,9 @@ const estructuraAcuerdos = new mongoose_1.Schema({
     fecha: {
         type: Date
     },
+    hora: {
+        type: Date
+    },
     imagenAcuerdo: [{
             type: String
         }],
@@ -25,6 +28,9 @@ const estructuraAcuerdos = new mongoose_1.Schema({
             descripcion: {
                 type: String,
                 //required: [true, 'La descripcion es obligatoria']
+            },
+            votos: {
+                type: Number
             }
         }],
     usuario: {

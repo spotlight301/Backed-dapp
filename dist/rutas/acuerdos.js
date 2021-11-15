@@ -31,8 +31,7 @@ rutasAcuerdos.post('/', [autenticacion_1.verificaToken], (request, response) => 
         yield acuerdosDB.populate({ path: 'comunidad' });
         response.json({
             ok: true,
-            //body,
-            acuerdosDB
+            acuerdo: acuerdosDB
         });
     })).catch(err => {
         response.json(err);
@@ -43,11 +42,12 @@ rutasAcuerdos.get('/', [autenticacion_1.verificaToken], (request, response) => _
     let pagina = Number(request.query.pagina) || 1;
     let skip = pagina - 1;
     skip = skip * 10;
-    const acuerdosPublicados = yield acuerdosBDModel_1.Acuerdos.find()
+    const acuerdosPublicados = yield acuerdosBDModel_1.Acuerdos.find({ comunidad: request.usuario.comunidad })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(10)
         .populate({ path: 'usuario', select: '-password' })
+        .populate({ path: 'comunidad' })
         .exec();
     response.json({
         ok: true,
