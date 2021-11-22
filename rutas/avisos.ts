@@ -1,4 +1,4 @@
-import { Router, Response } from "express";
+import { Router, Response, Request } from "express";
 import { verificaToken } from '../middlewares/autenticacion';
 import { Avisos } from '../modelos/avisosBDModel';
 import { FileUpload } from '../interfaces/file-upload';
