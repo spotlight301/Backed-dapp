@@ -44,4 +44,4 @@ const estructuraAcuerdos = new mongoose_1.Schema({
         //required: [true, 'Los acuerdos deben pertenecer a una comunidad']
     }
 });
-exports.Acuerdos = mongoose_1.model('Acuerdos', estructuraAcuerdos);
+exports.Acuerdos = (0, mongoose_1.model)('Acuerdos', estructuraAcuerdos);
