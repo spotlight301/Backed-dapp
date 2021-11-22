@@ -14,4 +14,4 @@ const estructuraMiembro = new mongoose_1.Schema({
         ref: 'Comunidad'
     }
 });
-exports.Miembro = mongoose_1.model('Miembro', estructuraMiembro);
+exports.Miembro = (0, mongoose_1.model)('Miembro', estructuraMiembro);
