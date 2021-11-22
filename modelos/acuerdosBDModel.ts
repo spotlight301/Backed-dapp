@@ -12,10 +12,10 @@ const estructuraAcuerdos = new Schema({
             required: [true, 'La descripcion es obligatoria']
         },
         fecha: {
-            type: Date
+            type: String
         },
         hora:{
-           type: Date
+           type: String
         },
         imagenAcuerdo: [{
             type: String
@@ -42,6 +42,9 @@ const estructuraAcuerdos = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Comunidad'
             //required: [true, 'Los acuerdos deben pertenecer a una comunidad']
+        },
+        estado:{
+            type: Number
         }
     
 });
@@ -50,12 +53,13 @@ interface IAcuerdos extends Document{
 
     titulo: string;
     descripcion: string;
-    fecha: Date;
-    hora: Date;
+    fecha: string;
+    hora: string;
     imagenAcuerdo: string;
     opciones: IOpciones[];
     usuario: string;
     comunidad: string;
+    estado: number;
     
 }
 

@@ -14,6 +14,7 @@ rutasAcuerdos.post('/', [verificaToken], (request: any, response: Response) => {
     const body = request.body;
     body.usuario = request.usuario._id;
     body.comunidad = request.usuario.comunidad;
+    body.estado = 1;
 
     const imagenes = fileSystem.imagenesTempHaciaAvisos(body.usuario);
     body.imagenAcuerdo = imagenes;
@@ -44,7 +45,7 @@ rutasAcuerdos.get('/', [verificaToken], async (request: any, response: Response)
     skip = skip * 10;
 
 
-    const acuerdosPublicados = await Acuerdos.find({comunidad: request.usuario.comunidad})
+    const acuerdosPublicados = await Acuerdos.find({comunidad: request.usuario.comunidad, estado: { "$in": [1, 2] }})
                                              .sort({_id:-1})
                                              .skip(skip)
                                              .limit(10)
@@ -110,5 +111,47 @@ rutasAcuerdos.get('/imagenAcuerdo/:idUsuario/:imgAcuerdo', (request: any, respon
 
 
 
+//actualizar acuerdo
+rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Response) => {
+
+    /* const dataOpciones = {
+         
+        titulo: request.body.opciones.titulo,
+        descripcion: request.body.opciones.descripcion,
+        votos: request.body.opciones.votos,
+    } */
+        
+    const dataAcuerdo = {
+       
+        titulo: request.body.titulo,
+        descripcion: request.body.descripcion,
+        fecha: request.body.fecha,
+        hora: request.body.hora,
+        imagenAcuerdo: request.body.imagenAcuerdo,
+        opciones: request.body.opciones,
+        estado: request.body.estado
+    }
+
+    Acuerdos.findByIdAndUpdate(request.body._id, dataAcuerdo, {new: true}, (err, acuerdoDB) =>{
+
+        if(err) throw err;
+
+        if(!acuerdoDB){
+            return response.json({
+                ok: false,
+                mensaje: 'No existe el acuerdo solicitado'
+            });
+        }
+
+        response.json({
+            ok: true,
+            acuerdo: acuerdoDB
+        });
+
+
+    });
+
+
+});
 
 export default rutasAcuerdos;

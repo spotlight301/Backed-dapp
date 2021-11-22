@@ -12,10 +12,10 @@ const estructuraAcuerdos = new mongoose_1.Schema({
         required: [true, 'La descripcion es obligatoria']
     },
     fecha: {
-        type: Date
+        type: String
     },
     hora: {
-        type: Date
+        type: String
     },
     imagenAcuerdo: [{
             type: String
@@ -42,6 +42,9 @@ const estructuraAcuerdos = new mongoose_1.Schema({
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'Comunidad'
         //required: [true, 'Los acuerdos deben pertenecer a una comunidad']
+    },
+    estado: {
+        type: Number
     }
 });
 exports.Acuerdos = mongoose_1.model('Acuerdos', estructuraAcuerdos);
