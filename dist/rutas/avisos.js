@@ -47,7 +47,10 @@ rutasAvisos.get('/', [autenticacion_1.verificaToken], (request, response) => __a
     let pagina = Number(request.query.pagina) || 1;
     let skip = pagina - 1;
     skip = skip * 10;
-    const avisosPublicados = yield avisosBDModel_1.Avisos.find({ comunidad: request.usuario.comunidad })
+    const estado = 1;
+    const avisosPublicados = yield avisosBDModel_1.Avisos.find({ comunidad: request.usuario.comunidad,
+        estadoAviso: estado
+    })
         .sort({ _id: -1 }) //de esta manera le decimos que parta del ultimo registr
         .skip(skip)
         .limit(10)
@@ -104,8 +107,11 @@ rutasAvisos.get('/usuario', [autenticacion_1.verificaToken], (request, response)
     let pagina = Number(request.query.pagina) || 1;
     let skip = pagina - 1;
     skip = skip * 10;
+    const estado = 1;
     const avisosPublicados = yield avisosBDModel_1.Avisos.find({ comunidad: request.usuario.comunidad,
-        usuario: request.usuario._id })
+        usuario: request.usuario._id,
+        estadoAviso: estado
+    })
         .sort({ _id: -1 }) //de esta manera le decimos que parta del ultimo registr
         .skip(skip)
         .limit(10)
@@ -134,6 +140,30 @@ rutasAvisos.post('/actualizar', [autenticacion_1.verificaToken], (request, respo
                 mensaje: 'Aviso no encontrado'
             });
         }
+        response.json({
+            ok: true,
+            usuario: request.usuario,
+            avisosBD
+        });
+    });
+});
+rutasAvisos.post('/eliminar', [autenticacion_1.verificaToken], (request, response) => {
+    const eliminarAviso = {
+        estadoAviso: request.body.estadoAviso
+    };
+    //primer parametro es ID, segundo objeto con los cambios, tercero la funcion flecha
+    avisosBDModel_1.Avisos.findByIdAndUpdate(request.body._id, eliminarAviso, { new: true }, (err, avisosBD) => {
+        //si hay algun error lo notificamos primero que todo
+        if (err)
+            throw err;
+        //si no existe el aviso informamos al usuario
+        if (!avisosBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'Aviso no encontrado'
+            });
+        }
+        //si todo salio bien mostramos al usuario y al aviso
         response.json({
             ok: true,
             usuario: request.usuario,

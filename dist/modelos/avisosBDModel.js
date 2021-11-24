@@ -30,6 +30,10 @@ const estructuraAvisos = new mongoose_1.Schema({
     tipoAviso: {
         type: Number,
         default: 4
+    },
+    estadoAviso: {
+        type: Number,
+        default: 1
     }
 });
 estructuraAvisos.pre('save', function (next) {
