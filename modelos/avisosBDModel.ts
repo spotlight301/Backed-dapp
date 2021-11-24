@@ -30,6 +30,10 @@ const estructuraAvisos = new Schema({
     tipoAviso: {
         type: Number,
         default: 4
+    },
+    estadoAviso:{
+        type: Number,
+        default: 1
     }
 
 });
@@ -56,6 +60,7 @@ interface IAvisos extends Document{
     usuario: string;
     comunidad: string;
     tipoAviso: number;
+    estadoAviso: number;
 
 }
 
