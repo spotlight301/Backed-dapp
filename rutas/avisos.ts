@@ -156,11 +156,34 @@ rutasAvisos.get('/usuario',[verificaToken], async (request: any, response: Respo
  //actualizarLAinformacion de un aviso publicado por un usuario
  rutasAvisos.post('/actualizar', [verificaToken], (request: any, response: Response) =>
  {
-     const updatedAviso ={
-         titulo: request.body.titulo,
-         descripcion: request.body.descripcion,
-         tipoAviso: request.body.tipoAviso
-     }
+    const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
+
+    var updatedAviso = {};
+    if(imagenes[0] != null)
+    {
+         updatedAviso =
+        {
+            titulo: request.body.titulo,
+            descripcion: request.body.descripcion,
+            tipoAviso: request.body.tipoAviso,
+            imagenAviso: imagenes
+        }
+    }
+    else{
+         updatedAviso ={
+            titulo: request.body.titulo,
+            descripcion: request.body.descripcion,
+            tipoAviso: request.body.tipoAviso,
+            
+   
+        }
+
+    }
+    
+     
+
+     
+     
 
      Avisos.findByIdAndUpdate(request.body._id, updatedAviso, {new: true}, (err, avisosBD) =>
      {

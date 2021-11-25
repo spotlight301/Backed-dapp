@@ -52,6 +52,8 @@ rutasUsuario.post('/login', (request: Request, response: Response) =>
 //function para crear un usuario
 rutasUsuario.post('/crear', (request: Request, response: Response) => 
 {
+    
+    request.body.comunidad = '619fb8108a20a206de2ad840';
     const dataUsuario = {
         nombre      : request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
@@ -157,7 +159,20 @@ rutasUsuario.get('/', [verificaToken], (request: any, response: Response) =>
         ok: true,
         usuario
     })
-})
+});
+
+rutasUsuario.get('/comunidad',[verificaToken],  async (request: any, response: Response) =>
+{
+    const comunidades = await Usuario.findById(request.usuario._id)
+                                     .populate({path:'comunidad'})
+                                     .select('-password')
+                                     .exec();
+    response.json({
+        ok: true,
+        comunidades
+    });
+
+} )
 
 
 

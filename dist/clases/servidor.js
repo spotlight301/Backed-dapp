@@ -6,8 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 class Servidor {
     constructor() {
-        this.port = 443;
-        this.app = express_1.default();
+        this.port = 3000;
+        this.app = (0, express_1.default)();
     }
     start(callback) {
         this.app.listen(this.port, callback);
