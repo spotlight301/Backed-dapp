@@ -46,4 +46,4 @@ estructuraUsuario.method('checkPass', function (password = '') {
         return false;
     }
 });
-exports.Usuario = (0, mongoose_1.model)('Usuario', estructuraUsuario);
+exports.Usuario = mongoose_1.model('Usuario', estructuraUsuario);

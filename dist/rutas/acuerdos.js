@@ -16,7 +16,7 @@ const express_1 = require("express");
 const autenticacion_1 = require("../middlewares/autenticacion");
 const acuerdosBDModel_1 = require("../modelos/acuerdosBDModel");
 const file_system_1 = __importDefault(require("../clases/file-system"));
-const rutasAcuerdos = (0, express_1.Router)();
+const rutasAcuerdos = express_1.Router();
 const fileSystem = new file_system_1.default();
 //Crear acuerdo
 rutasAcuerdos.post('/', [autenticacion_1.verificaToken], (request, response) => {
@@ -102,6 +102,7 @@ rutasAcuerdos.post('/actualizar', [autenticacion_1.verificaToken], (request, res
         descripcion: request.body.descripcion,
         fecha: request.body.fecha,
         hora: request.body.hora,
+        fechaLanzada: request.body.fechaLanzada,
         imagenAcuerdo: request.body.imagenAcuerdo,
         opciones: request.body.opciones,
         estado: request.body.estado
