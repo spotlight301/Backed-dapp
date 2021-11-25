@@ -17,6 +17,12 @@ const estructuraAcuerdos = new Schema({
         hora:{
            type: String
         },
+        duracion:{
+            type: Number
+        },
+        fechaLanzada:{
+            type: Number
+        },
         imagenAcuerdo: [{
             type: String
         }],
@@ -55,6 +61,8 @@ interface IAcuerdos extends Document{
     descripcion: string;
     fecha: string;
     hora: string;
+    duracion: number;
+    fechaLanzada: number;
     imagenAcuerdo: string;
     opciones: IOpciones[];
     usuario: string;

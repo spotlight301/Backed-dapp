@@ -127,6 +127,7 @@ rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Respo
         descripcion: request.body.descripcion,
         fecha: request.body.fecha,
         hora: request.body.hora,
+        fechaLanzada: request.body.fechaLanzada,
         imagenAcuerdo: request.body.imagenAcuerdo,
         opciones: request.body.opciones,
         estado: request.body.estado

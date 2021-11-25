@@ -17,6 +17,12 @@ const estructuraAcuerdos = new mongoose_1.Schema({
     hora: {
         type: String
     },
+    duracion: {
+        type: Number
+    },
+    fechaLanzada: {
+        type: Number
+    },
     imagenAcuerdo: [{
             type: String
         }],
@@ -47,4 +53,4 @@ const estructuraAcuerdos = new mongoose_1.Schema({
         type: Number
     }
 });
-exports.Acuerdos = (0, mongoose_1.model)('Acuerdos', estructuraAcuerdos);
+exports.Acuerdos = mongoose_1.model('Acuerdos', estructuraAcuerdos);
