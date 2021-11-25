@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -9,7 +18,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
-const rutasUsuario = express_1.Router();
+const rutasUsuario = (0, express_1.Router)();
 //function para autentificarse
 rutasUsuario.post('/login', (request, response) => {
     usuarioBDModel_1.Usuario.findOne({ email: request.body.email }, (err, usuarioBD) => {
@@ -45,6 +54,7 @@ rutasUsuario.post('/login', (request, response) => {
 });
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
+    request.body.comunidad = '619fb8108a20a206de2ad840';
     const dataUsuario = {
         nombre: request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
@@ -116,4 +126,14 @@ rutasUsuario.get('/', [autenticacion_1.verificaToken], (request, response) => {
         usuario
     });
 });
+rutasUsuario.get('/comunidad', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const comunidades = yield usuarioBDModel_1.Usuario.findById(request.usuario._id)
+        .populate({ path: 'comunidad' })
+        .select('-password')
+        .exec();
+    response.json({
+        ok: true,
+        comunidades
+    });
+}));
 exports.default = rutasUsuario;

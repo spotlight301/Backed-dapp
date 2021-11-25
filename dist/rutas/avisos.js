@@ -17,7 +17,7 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const avisosBDModel_1 = require("../modelos/avisosBDModel");
 const file_system_1 = __importDefault(require("../clases/file-system"));
 const fileSystem = new file_system_1.default();
-const rutasAvisos = express_1.Router();
+const rutasAvisos = (0, express_1.Router)();
 //crear un nuevo aviso
 rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
     //la constante body almacenara el contenido que se envia desde la pagina al servidor
@@ -126,11 +126,24 @@ rutasAvisos.get('/usuario', [autenticacion_1.verificaToken], (request, response)
 }));
 //actualizarLAinformacion de un aviso publicado por un usuario
 rutasAvisos.post('/actualizar', [autenticacion_1.verificaToken], (request, response) => {
-    const updatedAviso = {
-        titulo: request.body.titulo,
-        descripcion: request.body.descripcion,
-        tipoAviso: request.body.tipoAviso
-    };
+    const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
+    var updatedAviso = {};
+    if (imagenes[0] != null) {
+        updatedAviso =
+            {
+                titulo: request.body.titulo,
+                descripcion: request.body.descripcion,
+                tipoAviso: request.body.tipoAviso,
+                imagenAviso: imagenes
+            };
+    }
+    else {
+        updatedAviso = {
+            titulo: request.body.titulo,
+            descripcion: request.body.descripcion,
+            tipoAviso: request.body.tipoAviso,
+        };
+    }
     avisosBDModel_1.Avisos.findByIdAndUpdate(request.body._id, updatedAviso, { new: true }, (err, avisosBD) => {
         if (err)
             throw err;
