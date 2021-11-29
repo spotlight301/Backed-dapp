@@ -113,13 +113,6 @@ rutasAcuerdos.get('/imagenAcuerdo/:idUsuario/:imgAcuerdo', (request: any, respon
 
 //actualizar acuerdo
 rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Response) => {
-
-    /* const dataOpciones = {
-         
-        titulo: request.body.opciones.titulo,
-        descripcion: request.body.opciones.descripcion,
-        votos: request.body.opciones.votos,
-    } */
         
     const dataAcuerdo = {
        
@@ -127,6 +120,7 @@ rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Respo
         descripcion: request.body.descripcion,
         fecha: request.body.fecha,
         hora: request.body.hora,
+        duracion: request.body.duracion,
         fechaLanzada: request.body.fechaLanzada,
         imagenAcuerdo: request.body.imagenAcuerdo,
         opciones: request.body.opciones,
