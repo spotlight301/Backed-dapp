@@ -40,14 +40,20 @@ rutasComunidad.post('/crear', (request: any, response: Response) =>
                                 });
                 }
 
-        
+                //inicializamos array en 0 para pasarle los valores y actualizarlos
                 var arrayComunidades = [];
+                var arrayRol = [];
+                var newRol = 1;
                 arrayComunidades = usuarioBD.comunidad;
+                arrayRol = usuarioBD.rol;
                 arrayComunidades.push(comunidadBD._id);
+                arrayRol.push(newRol);
+
 
                 const dataUsuario = 
                     {
                     _id: usuarioBD._id,
+                    rol: arrayRol,
                     comunidad: arrayComunidades
                     }
                 
