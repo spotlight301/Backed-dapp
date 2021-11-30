@@ -175,6 +175,8 @@ rutasUsuario.get('/comunidad',[verificaToken],  async (request: any, response: R
 
 } )
 
+////comentario
+
 
 
 export default rutasUsuario;
