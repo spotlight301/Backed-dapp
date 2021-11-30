@@ -36,7 +36,7 @@ rutasUsuario.post('/login', (request, response) => {
                 nombre: usuarioBD.nombre,
                 email: usuarioBD.email,
                 imagenPerfil: usuarioBD.imagenPerfil,
-                rol: usuarioBD.rol,
+                rol: usuarioBD.rol[0],
                 comunidad: usuarioBD.comunidad[0]
             });
             response.json({
@@ -55,6 +55,7 @@ rutasUsuario.post('/login', (request, response) => {
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
     request.body.comunidad = '619fb8108a20a206de2ad840';
+    request.body.rol = 2;
     const dataUsuario = {
         nombre: request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
@@ -136,4 +137,5 @@ rutasUsuario.get('/comunidad', [autenticacion_1.verificaToken], (request, respon
         comunidades
     });
 }));
+////comentario
 exports.default = rutasUsuario;
