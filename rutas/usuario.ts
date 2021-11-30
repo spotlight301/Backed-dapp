@@ -28,7 +28,7 @@ rutasUsuario.post('/login', (request: Request, response: Response) =>
                 nombre:  usuarioBD.nombre,
                 email: usuarioBD.email,
                 imagenPerfil: usuarioBD.imagenPerfil,
-                rol: usuarioBD.rol,
+                rol: usuarioBD.rol[0],
                 comunidad: usuarioBD.comunidad[0]
 
             })
@@ -54,6 +54,7 @@ rutasUsuario.post('/crear', (request: Request, response: Response) =>
 {
     
     request.body.comunidad = '619fb8108a20a206de2ad840';
+    request.body.rol = 2;
     const dataUsuario = {
         nombre      : request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
@@ -173,6 +174,8 @@ rutasUsuario.get('/comunidad',[verificaToken],  async (request: any, response: R
     });
 
 } )
+
+////comentario
 
 
 
