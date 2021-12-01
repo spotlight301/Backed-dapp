@@ -175,7 +175,48 @@ rutasUsuario.get('/comunidad',[verificaToken],  async (request: any, response: R
 
 } )
 
-////comentario
+//actualizar Token
+rutasUsuario.post('/updateToken' , (request: any, response: Response) =>
+{
+    const data = {
+        usuario: request.body.usuario,
+        posicion: request.body.posicion
+    }
+    
+
+    Usuario.findOne({_id: data.usuario}, (err:any , usuarioBD: any) =>
+    {
+        if(err) throw err;
+
+        if(!usuarioBD)
+        {
+            return response.json({
+                ok: false,
+                mensaje: 'ID incorrecta'});
+        }
+
+        const usuarioToken = Token.getJwtToken({
+            _id: usuarioBD._id,
+            nombre: usuarioBD.nombre,
+            email: usuarioBD.email,
+            imagenPerfil: usuarioBD.imagenPerfil,
+            rol: usuarioBD.rol[data.posicion],
+            comunidad: usuarioBD.comunidad[data.posicion]
+
+        })
+
+
+
+        response.json({
+            ok: true,
+            token: usuarioToken
+        });
+
+
+    })
+    
+
+})
 
 
 

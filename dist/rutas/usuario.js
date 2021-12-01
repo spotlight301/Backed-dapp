@@ -137,5 +137,33 @@ rutasUsuario.get('/comunidad', [autenticacion_1.verificaToken], (request, respon
         comunidades
     });
 }));
-////comentario
+//actualizar Token
+rutasUsuario.post('/updateToken', (request, response) => {
+    const data = {
+        usuario: request.body.usuario,
+        posicion: request.body.posicion
+    };
+    usuarioBDModel_1.Usuario.findOne({ _id: data.usuario }, (err, usuarioBD) => {
+        if (err)
+            throw err;
+        if (!usuarioBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'ID incorrecta'
+            });
+        }
+        const usuarioToken = token_1.default.getJwtToken({
+            _id: usuarioBD._id,
+            nombre: usuarioBD.nombre,
+            email: usuarioBD.email,
+            imagenPerfil: usuarioBD.imagenPerfil,
+            rol: usuarioBD.rol[data.posicion],
+            comunidad: usuarioBD.comunidad[data.posicion]
+        });
+        response.json({
+            ok: true,
+            token: usuarioToken
+        });
+    });
+});
 exports.default = rutasUsuario;
