@@ -12,7 +12,9 @@ rutasComunidad.post('/crear', (request, response) => {
     const dataComunidad = {
         nombreComunidad: request.body.nombreComunidad,
         descripcion: request.body.descripcion,
-        coordenadas: request.body.coordenadas
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
     };
     const idUsuario = request.body.usuario;
     //creamos comunidad
@@ -79,10 +81,14 @@ rutasComunidad.get('/', [autenticacion_1.verificaToken], (request, response) => 
 });
 //crear una comunidad
 rutasComunidad.post('/crearDefault', (request, response) => {
+    request.body.region = 'Bío-Bío';
+    request.body.comuna = 'Concepción';
     const dataComunidad = {
         nombreComunidad: request.body.nombreComunidad,
         descripcion: request.body.descripcion,
-        coordenadas: request.body.coordenadas
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
     };
     comunidadBDModel_1.Comunidad.create(dataComunidad).then(comunidadBD => {
         response.json({
@@ -93,6 +99,29 @@ rutasComunidad.post('/crearDefault', (request, response) => {
         response.json({
             ok: false,
             err
+        });
+    });
+});
+rutasComunidad.post('/actualizar', (request, response) => {
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        descripcion: request.body.descripcion,
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
+    };
+    comunidadBDModel_1.Comunidad.findByIdAndUpdate(request.body._id, dataComunidad, { new: true }, (err, comunidadBD) => {
+        if (err)
+            throw err;
+        if (!comunidadBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'Comunidad no encontrada'
+            });
+        }
+        response.json({
+            ok: true,
+            comunidadBD
         });
     });
 });

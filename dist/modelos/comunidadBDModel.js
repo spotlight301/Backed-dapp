@@ -17,6 +17,12 @@ const estructuraComunidad = new mongoose_1.Schema({
     },
     coordenadas: {
         type: String
+    },
+    region: {
+        type: String
+    },
+    comuna: {
+        type: String
     }
 });
 exports.Comunidad = (0, mongoose_1.model)('Comunidad', estructuraComunidad);

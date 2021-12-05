@@ -17,7 +17,9 @@ rutasComunidad.post('/crear', (request: any, response: Response) =>
     { 
         nombreComunidad: request.body.nombreComunidad,
         descripcion: request.body.descripcion,
-        coordenadas: request.body.coordenadas
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
     }
 
     const idUsuario = request.body.usuario;
@@ -119,11 +121,16 @@ rutasComunidad.get('/', [verificaToken], (request: any, response: Response) =>
 //crear una comunidad
 rutasComunidad.post('/crearDefault',  (request: any, response: Response) =>
 {
+    request.body.region = 'Bío-Bío';
+    request.body.comuna = 'Concepción'
     const dataComunidad = 
     { 
         nombreComunidad: request.body.nombreComunidad,
         descripcion: request.body.descripcion,
-        coordenadas: request.body.coordenadas
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
+
     }
 
     
@@ -143,6 +150,38 @@ rutasComunidad.post('/crearDefault',  (request: any, response: Response) =>
                 });
             })
 });
+
+
+rutasComunidad.post('/actualizar', (request: any, response: Response) =>
+{
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        descripcion: request.body.descripcion,
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna 
+    }
+
+    Comunidad.findByIdAndUpdate(request.body._id, dataComunidad, {new: true}, (err, comunidadBD) =>
+    {
+        if(err) throw err;
+
+        if(!comunidadBD)
+        {
+            return response.json({
+                ok: false,
+                mensaje: 'Comunidad no encontrada'
+            });
+        }
+
+        response.json({
+            ok: true,
+            comunidadBD 
+        });
+
+    });
+
+})
 
 
 
