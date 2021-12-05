@@ -16,7 +16,7 @@ const express_1 = require("express");
 const autenticacion_1 = require("../middlewares/autenticacion");
 const acuerdosBDModel_1 = require("../modelos/acuerdosBDModel");
 const file_system_1 = __importDefault(require("../clases/file-system"));
-const rutasAcuerdos = (0, express_1.Router)();
+const rutasAcuerdos = express_1.Router();
 const fileSystem = new file_system_1.default();
 //Crear acuerdo
 rutasAcuerdos.post('/', [autenticacion_1.verificaToken], (request, response) => {
@@ -91,17 +91,12 @@ rutasAcuerdos.get('/imagenAcuerdo/:idUsuario/:imgAcuerdo', (request, response) =
 });
 //actualizar acuerdo
 rutasAcuerdos.post('/actualizar', [autenticacion_1.verificaToken], (request, response) => {
-    /* const dataOpciones = {
-         
-        titulo: request.body.opciones.titulo,
-        descripcion: request.body.opciones.descripcion,
-        votos: request.body.opciones.votos,
-    } */
     const dataAcuerdo = {
         titulo: request.body.titulo,
         descripcion: request.body.descripcion,
         fecha: request.body.fecha,
         hora: request.body.hora,
+        duracion: request.body.duracion,
         fechaLanzada: request.body.fechaLanzada,
         imagenAcuerdo: request.body.imagenAcuerdo,
         opciones: request.body.opciones,

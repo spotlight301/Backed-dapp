@@ -30,7 +30,7 @@ const estructuraUsuario= new Schema({
     imagenPerfil:
     {
         type: String,
-        default: 'perfil.png'
+        default: 'av-3.png'
     },
     rol:
     {

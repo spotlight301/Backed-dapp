@@ -18,7 +18,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
-const rutasUsuario = (0, express_1.Router)();
+const rutasUsuario = express_1.Router();
 //function para autentificarse
 rutasUsuario.post('/login', (request, response) => {
     usuarioBDModel_1.Usuario.findOne({ email: request.body.email }, (err, usuarioBD) => {
@@ -54,7 +54,7 @@ rutasUsuario.post('/login', (request, response) => {
 });
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
-    request.body.comunidad = '619fb8108a20a206de2ad840';
+    request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
     const dataUsuario = {
         nombre: request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
