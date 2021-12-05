@@ -53,7 +53,7 @@ rutasUsuario.post('/login', (request: Request, response: Response) =>
 rutasUsuario.post('/crear', (request: Request, response: Response) => 
 {
     
-    request.body.comunidad = '619fb8108a20a206de2ad840';
+    request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
     request.body.rol = 2;
     const dataUsuario = {
         nombre      : request.body.nombre,
@@ -216,7 +216,17 @@ rutasUsuario.post('/updateToken' , (request: any, response: Response) =>
     })
     
 
-})
+});
+
+//funcion para remover una comunidad de la data de usuario
+rutasUsuario.post('/abandonarComunidad' , (request: any, response: Response) =>
+{
+    response.json({
+        ok: true,
+    });
+
+
+});
 
 
 
