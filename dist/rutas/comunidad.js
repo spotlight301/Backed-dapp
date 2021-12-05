@@ -5,7 +5,7 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 const usuarioBDModel_1 = require("../modelos/usuarioBDModel");
 //crearemos el objeto con el cual realizaremos las peticiones
-const rutasComunidad = (0, express_1.Router)();
+const rutasComunidad = express_1.Router();
 //crear una comunidad
 rutasComunidad.post('/crear', (request, response) => {
     //llenamos el objeto que crearemos comunidad

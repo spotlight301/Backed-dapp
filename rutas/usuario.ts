@@ -54,7 +54,7 @@ rutasUsuario.post('/crear', (request: Request, response: Response) =>
 {
     
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
-    request.body.rol = 2;
+
     const dataUsuario = {
         nombre      : request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
