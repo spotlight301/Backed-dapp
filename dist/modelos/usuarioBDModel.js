@@ -29,10 +29,10 @@ const estructuraUsuario = new mongoose_1.Schema({
         type: String,
         default: 'av-3.png'
     },
-    rol: {
-        type: Number,
-        default: 1
-    },
+    rol: [{
+            type: Number,
+            default: 1
+        }],
     comunidad: [{
             type: mongoose_1.Schema.Types.ObjectId,
             ref: 'Comunidad'

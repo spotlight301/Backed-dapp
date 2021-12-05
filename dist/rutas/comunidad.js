@@ -3,16 +3,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
+const usuarioBDModel_1 = require("../modelos/usuarioBDModel");
 //crearemos el objeto con el cual realizaremos las peticiones
 const rutasComunidad = express_1.Router();
 //crear una comunidad
 rutasComunidad.post('/crear', (request, response) => {
-    const dataComunidad = { nombreComunidad: request.body.nombreComunidad };
+    //llenamos el objeto que crearemos comunidad
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        descripcion: request.body.descripcion,
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
+    };
+    const idUsuario = request.body.usuario;
+    //creamos comunidad
     comunidadBDModel_1.Comunidad.create(dataComunidad).then(comunidadBD => {
-        response.json({
-            ok: true,
-            nombreComunidad: comunidadBD
-        });
+        //buscamos al usuario por id para traer sus comunidades
+        //y agregar la nueva comunidad
+        usuarioBDModel_1.Usuario.findOne({ _id: idUsuario }, (err, usuarioBD) => {
+            if (err)
+                throw err;
+            if (!usuarioBD) {
+                return response.json({
+                    ok: false,
+                    mensaje: 'ID incorrecta'
+                });
+            }
+            //inicializamos array en 0 para pasarle los valores y actualizarlos
+            var arrayComunidades = [];
+            var arrayRol = [];
+            var newRol = 1;
+            arrayComunidades = usuarioBD.comunidad;
+            arrayRol = usuarioBD.rol;
+            arrayComunidades.push(comunidadBD._id);
+            arrayRol.push(newRol);
+            const dataUsuario = {
+                _id: usuarioBD._id,
+                rol: arrayRol,
+                comunidad: arrayComunidades
+            };
+            //ahora que tenemos listo la data el usuario actualizaremos la info
+            usuarioBDModel_1.Usuario.findByIdAndUpdate(idUsuario, dataUsuario, { new: true }, (err, usuarioBD) => {
+                if (err)
+                    throw err;
+                if (!usuarioBD) {
+                    return request.json({
+                        ok: false,
+                        mensaje: 'Usuario no encontrado'
+                    });
+                }
+                response.json({
+                    ok: true,
+                    IdComunidad: comunidadBD._id,
+                    nombre: comunidadBD.nombreComunidad,
+                    usuario: usuarioBD
+                });
+            }); //fin actualizar usuario
+        }); //fin a findOne usuario
+        //fin a crear comunidad   
     }).catch(err => {
         response.json({
             ok: false,
@@ -28,6 +77,52 @@ rutasComunidad.get('/', [autenticacion_1.verificaToken], (request, response) => 
     response.json({
         comunidades,
         ok: true
+    });
+});
+//crear una comunidad
+rutasComunidad.post('/crearDefault', (request, response) => {
+    request.body.region = 'Bío-Bío';
+    request.body.comuna = 'Concepción';
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        descripcion: request.body.descripcion,
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
+    };
+    comunidadBDModel_1.Comunidad.create(dataComunidad).then(comunidadBD => {
+        response.json({
+            ok: true,
+            IdComunidad: comunidadBD._id
+        });
+    }).catch(err => {
+        response.json({
+            ok: false,
+            err
+        });
+    });
+});
+rutasComunidad.post('/actualizar', (request, response) => {
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        descripcion: request.body.descripcion,
+        coordenadas: request.body.coordenadas,
+        region: request.body.region,
+        comuna: request.body.comuna
+    };
+    comunidadBDModel_1.Comunidad.findByIdAndUpdate(request.body._id, dataComunidad, { new: true }, (err, comunidadBD) => {
+        if (err)
+            throw err;
+        if (!comunidadBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'Comunidad no encontrada'
+            });
+        }
+        response.json({
+            ok: true,
+            comunidadBD
+        });
     });
 });
 //exportamos el objeto para ocuparla en index

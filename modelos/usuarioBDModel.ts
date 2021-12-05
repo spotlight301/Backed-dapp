@@ -33,10 +33,10 @@ const estructuraUsuario= new Schema({
         default: 'av-3.png'
     },
     rol:
-    {
+    [{
         type: Number,
         default: 1
-    },
+    }],
     comunidad:[{
         type: Schema.Types.ObjectId,
         ref: 'Comunidad'
@@ -61,7 +61,7 @@ interface IUsuario extends Document {
     email: string;
     password: string;
     imagenPerfil: string;
-    rol: number;
+    rol: number[];
     comunidad: string[];
 
     checkPass(password: string): boolean;

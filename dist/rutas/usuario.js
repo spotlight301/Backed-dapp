@@ -36,8 +36,8 @@ rutasUsuario.post('/login', (request, response) => {
                 nombre: usuarioBD.nombre,
                 email: usuarioBD.email,
                 imagenPerfil: usuarioBD.imagenPerfil,
-                rol: usuarioBD.rol,
-                comunidad: usuarioBD.comunidad
+                rol: usuarioBD.rol[0],
+                comunidad: usuarioBD.comunidad[0]
             });
             response.json({
                 ok: true,
@@ -55,6 +55,7 @@ rutasUsuario.post('/login', (request, response) => {
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
+
     const dataUsuario = {
         nombre: request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
@@ -136,4 +137,39 @@ rutasUsuario.get('/comunidad', [autenticacion_1.verificaToken], (request, respon
         comunidades
     });
 }));
+//actualizar Token
+rutasUsuario.post('/updateToken', (request, response) => {
+    const data = {
+        usuario: request.body.usuario,
+        posicion: request.body.posicion
+    };
+    usuarioBDModel_1.Usuario.findOne({ _id: data.usuario }, (err, usuarioBD) => {
+        if (err)
+            throw err;
+        if (!usuarioBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'ID incorrecta'
+            });
+        }
+        const usuarioToken = token_1.default.getJwtToken({
+            _id: usuarioBD._id,
+            nombre: usuarioBD.nombre,
+            email: usuarioBD.email,
+            imagenPerfil: usuarioBD.imagenPerfil,
+            rol: usuarioBD.rol[data.posicion],
+            comunidad: usuarioBD.comunidad[data.posicion]
+        });
+        response.json({
+            ok: true,
+            token: usuarioToken
+        });
+    });
+});
+//funcion para remover una comunidad de la data de usuario
+rutasUsuario.post('/abandonarComunidad', (request, response) => {
+    response.json({
+        ok: true,
+    });
+});
 exports.default = rutasUsuario;

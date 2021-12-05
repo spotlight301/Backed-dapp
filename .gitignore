@@ -1,3 +1,2 @@
 #creando el gitignore personalmente 
-/node_modules
-/dist
+node_modules/
