@@ -16,12 +16,12 @@ const servidor = new servidor_1.default();
 servidor.app.use(express_1.default.urlencoded({ extended: true }));
 servidor.app.use(express_1.default.json());
 //configuracion para obtener los archivos que subimos 
-servidor.app.use(express_fileupload_1.default({
+servidor.app.use((0, express_fileupload_1.default)({
 // useTempFiles : true,
 //tempFileDir : '/tmp/'
 }));
 //Configuración de CORS para que el servidor no bloquee peticiones hTTp de origin !=
-servidor.app.use(cors_1.default({ origin: true, credentials: true }));
+servidor.app.use((0, cors_1.default)({ origin: true, credentials: true }));
 //rutas de la aplicacion
 servidor.app.use('/usuario', usuario_1.default);
 servidor.app.use('/avisos', avisos_1.default);
