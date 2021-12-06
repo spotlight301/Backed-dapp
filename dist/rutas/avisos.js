@@ -17,7 +17,7 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const avisosBDModel_1 = require("../modelos/avisosBDModel");
 const file_system_1 = __importDefault(require("../clases/file-system"));
 const fileSystem = new file_system_1.default();
-const rutasAvisos = express_1.Router();
+const rutasAvisos = (0, express_1.Router)();
 //crear un nuevo aviso
 rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
     //la constante body almacenara el contenido que se envia desde la pagina al servidor

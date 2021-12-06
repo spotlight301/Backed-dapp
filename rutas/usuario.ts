@@ -54,6 +54,7 @@ rutasUsuario.post('/crear', (request: Request, response: Response) =>
 {
     
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
+    request.body.rol = 2;
 
     const dataUsuario = {
         nombre      : request.body.nombre,
@@ -219,13 +220,76 @@ rutasUsuario.post('/updateToken' , (request: any, response: Response) =>
 });
 
 //funcion para remover una comunidad de la data de usuario
-rutasUsuario.post('/abandonarComunidad' , (request: any, response: Response) =>
-{
-    response.json({
-        ok: true,
+rutasUsuario.post('/abandonarComunidad', [verificaToken], (request: any, response: Response) => {
+
+    const comunidadBorrar = {
+        id: request.body._id
+    }
+    //encontramos al usuario para obtener sus comunidades y roles
+    Usuario.findById(request.usuario._id, (err : any, usuarioBD : any) => {
+        if (err)
+            throw err;
+        if (!usuarioBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'ID incorrecta'
+            });
+        }
+
+        //pasamos las comunidades y los roles a dos arrays para trabajarlos mejor
+        var arrayComunidades = [];
+        var arrayRol = [];
+        arrayComunidades = usuarioBD.comunidad;
+        arrayRol = usuarioBD.rol;
+        var usuarioToken: any;
+        var auxToken = false;
+        
+        //removemos data de ambos Arrays
+        let index = arrayComunidades.indexOf(comunidadBorrar.id);
+        if (index != -1) {
+            arrayComunidades.splice(index, 1);
+            
+        }
+        arrayRol.splice(index, 1);
+        const dataUsuario = {
+            rol: arrayRol,
+            comunidad: arrayComunidades
+        };
+        
+        //actualizamos el usuario
+Usuario.findByIdAndUpdate(usuarioBD._id, dataUsuario, { new: true }, (err, usuarioUpdate) => {
+    if (err)
+        throw err;
+    if (!usuarioUpdate) {
+        return request.json({
+            ok: false,
+            mensaje: 'Usuario no encontrado'
+        });
+    }
+    if (request.usuario.comunidad == comunidadBorrar.id) {
+        auxToken = true;
+        usuarioToken = Token.getJwtToken({
+            _id: usuarioBD._id,
+            nombre: usuarioBD.nombre,
+            email: usuarioBD.email,
+            imagenPerfil: usuarioBD.imagenPerfil,
+            rol: usuarioBD.rol[0],
+            comunidad: usuarioBD.comunidad[0]
+        });
+    }
+    if (auxToken) {
+        response.json({
+            ok: true,
+            token: usuarioToken
+        });
+    }
+    else {
+        response.json({
+            ok: true
+        });
+    }
+});
     });
-
-
 });
 
 

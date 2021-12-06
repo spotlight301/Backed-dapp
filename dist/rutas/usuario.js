@@ -18,7 +18,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
-const rutasUsuario = express_1.Router();
+const rutasUsuario = (0, express_1.Router)();
 //function para autentificarse
 rutasUsuario.post('/login', (request, response) => {
     usuarioBDModel_1.Usuario.findOne({ email: request.body.email }, (err, usuarioBD) => {
@@ -55,7 +55,7 @@ rutasUsuario.post('/login', (request, response) => {
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
-
+    request.body.rol = 2;
     const dataUsuario = {
         nombre: request.body.nombre,
         fechaNacimiento: request.body.fechaNacimiento,
@@ -167,9 +167,70 @@ rutasUsuario.post('/updateToken', (request, response) => {
     });
 });
 //funcion para remover una comunidad de la data de usuario
-rutasUsuario.post('/abandonarComunidad', (request, response) => {
-    response.json({
-        ok: true,
+rutasUsuario.post('/abandonarComunidad', [autenticacion_1.verificaToken], (request, response) => {
+    const comunidadBorrar = {
+        id: request.body._id
+    };
+    //encontramos al usuario para obtener sus comunidades y roles
+    usuarioBDModel_1.Usuario.findById(request.usuario._id, (err, usuarioBD) => {
+        if (err)
+            throw err;
+        if (!usuarioBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'ID incorrecta'
+            });
+        }
+        //pasamos las comunidades y los roles a dos arrays para trabajarlos mejor
+        var arrayComunidades = [];
+        var arrayRol = [];
+        arrayComunidades = usuarioBD.comunidad;
+        arrayRol = usuarioBD.rol;
+        var usuarioToken;
+        var auxToken = false;
+        //removemos data de ambos Arrays
+        let index = arrayComunidades.indexOf(comunidadBorrar.id);
+        if (index != -1) {
+            arrayComunidades.splice(index, 1);
+        }
+        arrayRol.splice(index, 1);
+        const dataUsuario = {
+            rol: arrayRol,
+            comunidad: arrayComunidades
+        };
+        //actualizamos el usuario
+        usuarioBDModel_1.Usuario.findByIdAndUpdate(usuarioBD._id, dataUsuario, { new: true }, (err, usuarioUpdate) => {
+            if (err)
+                throw err;
+            if (!usuarioUpdate) {
+                return request.json({
+                    ok: false,
+                    mensaje: 'Usuario no encontrado'
+                });
+            }
+            if (request.usuario.comunidad == comunidadBorrar.id) {
+                auxToken = true;
+                usuarioToken = token_1.default.getJwtToken({
+                    _id: usuarioBD._id,
+                    nombre: usuarioBD.nombre,
+                    email: usuarioBD.email,
+                    imagenPerfil: usuarioBD.imagenPerfil,
+                    rol: usuarioBD.rol[0],
+                    comunidad: usuarioBD.comunidad[0]
+                });
+            }
+            if (auxToken) {
+                response.json({
+                    ok: true,
+                    token: usuarioToken
+                });
+            }
+            else {
+                response.json({
+                    ok: true
+                });
+            }
+        });
     });
 });
 exports.default = rutasUsuario;
