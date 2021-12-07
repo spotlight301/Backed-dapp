@@ -12,6 +12,7 @@ const usuario_1 = __importDefault(require("./rutas/usuario"));
 const avisos_1 = __importDefault(require("./rutas/avisos"));
 const comunidad_1 = __importDefault(require("./rutas/comunidad"));
 const acuerdos_1 = __importDefault(require("./rutas/acuerdos"));
+const solicitud_1 = __importDefault(require("./rutas/solicitud"));
 const servidor = new servidor_1.default();
 servidor.app.use(express_1.default.urlencoded({ extended: true }));
 servidor.app.use(express_1.default.json());
@@ -27,6 +28,7 @@ servidor.app.use('/usuario', usuario_1.default);
 servidor.app.use('/avisos', avisos_1.default);
 servidor.app.use('/comunidad', comunidad_1.default);
 servidor.app.use('/acuerdos', acuerdos_1.default);
+servidor.app.use('/solicitud', solicitud_1.default);
 //conexion a base de datos de verdad
 mongoose_1.default.connect('mongodb+srv://veciUser:veciPass-1x7@vecired.6lbpq.mongodb.net/veciRed?retryWrites=true&w=majority', (err) => {
     if (err)

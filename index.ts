@@ -7,6 +7,7 @@ import rutasUsuario from "./rutas/usuario";
 import rutasAvisos from "./rutas/avisos";
 import rutasComunidad from "./rutas/comunidad";
 import rutasAcuerdos from "./rutas/acuerdos";
+import rutasSolicitud from './rutas/solicitud';
 
 const servidor = new Servidor();
 
@@ -30,6 +31,7 @@ servidor.app.use('/usuario', rutasUsuario);
 servidor.app.use('/avisos', rutasAvisos);
 servidor.app.use('/comunidad', rutasComunidad);
 servidor.app.use('/acuerdos', rutasAcuerdos);
+servidor.app.use('/solicitud', rutasSolicitud);
 
 
 

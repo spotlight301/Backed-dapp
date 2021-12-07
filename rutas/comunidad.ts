@@ -181,7 +181,73 @@ rutasComunidad.post('/actualizar', (request: any, response: Response) =>
 
     });
 
-})
+});
+
+
+//filtrar comunidades para que un usuario pueda unirse
+rutasComunidad.post('/buscar',  async (request: any,  response: Response) =>
+{
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        region: request.body.region,
+        comuna: request.body.comuna,
+      
+    }
+
+    var comunidades:any = {};
+
+    //si solo viene el nombre
+    if(dataComunidad.nombreComunidad != '' && dataComunidad.comuna == '' && dataComunidad.region == '' )
+    {
+        
+        const regex = new RegExp(dataComunidad.nombreComunidad, 'i'); //case sensitive
+        comunidades = await Comunidad.find({nombreComunidad: {$regex: regex}})
+                                     .exec();
+    }
+    //si solo viene region
+    if (dataComunidad.comuna == '' && dataComunidad.nombreComunidad == '')
+    {
+        comunidades = await Comunidad.find({region: dataComunidad.region})
+                                     .exec();
+    }
+
+
+    //si solo viene region y comuna
+    if(dataComunidad.comuna != '' && dataComunidad.region != '' && dataComunidad.nombreComunidad == '')
+    {
+        comunidades = await Comunidad.find({region: dataComunidad.region,
+                                            comuna: dataComunidad.comuna})                           
+                                     .exec();
+    }
+
+    //si viene nombre, region y comuna
+    if(dataComunidad.comuna != '' && dataComunidad.region != '' && dataComunidad.nombreComunidad != '')
+    {
+        const regex = new RegExp(dataComunidad.nombreComunidad, 'i'); 
+        comunidades = await Comunidad.find({ nombreComunidad: {$regex: regex}
+                                            ,region: dataComunidad.region,
+                                            comuna: dataComunidad.comuna})                           
+                                     .exec();
+    }
+    
+    
+
+    // comunidades = await Comunidad.find({region:reg})
+    //                              .exec();
+
+    response.json({
+        ok: true,
+        comunidades  
+    });
+
+
+
+
+     
+                                 
+   
+
+});
 
 
 
