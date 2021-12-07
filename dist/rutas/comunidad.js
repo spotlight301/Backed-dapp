@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const autenticacion_1 = require("../middlewares/autenticacion");
@@ -125,5 +134,45 @@ rutasComunidad.post('/actualizar', (request, response) => {
         });
     });
 });
+//filtrar comunidades para que un usuario pueda unirse
+rutasComunidad.post('/buscar', (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const dataComunidad = {
+        nombreComunidad: request.body.nombreComunidad,
+        region: request.body.region,
+        comuna: request.body.comuna,
+    };
+    var comunidades = {};
+    //si solo viene el nombre
+    if (dataComunidad.nombreComunidad != '' && dataComunidad.comuna == '' && dataComunidad.region == '') {
+        const regex = new RegExp(dataComunidad.nombreComunidad, 'i'); //case sensitive
+        comunidades = yield comunidadBDModel_1.Comunidad.find({ nombreComunidad: { $regex: regex } })
+            .exec();
+    }
+    //si solo viene region
+    if (dataComunidad.comuna == '' && dataComunidad.nombreComunidad == '') {
+        comunidades = yield comunidadBDModel_1.Comunidad.find({ region: dataComunidad.region })
+            .exec();
+    }
+    //si solo viene region y comuna
+    if (dataComunidad.comuna != '' && dataComunidad.region != '' && dataComunidad.nombreComunidad == '') {
+        comunidades = yield comunidadBDModel_1.Comunidad.find({ region: dataComunidad.region,
+            comuna: dataComunidad.comuna })
+            .exec();
+    }
+    //si viene nombre, region y comuna
+    if (dataComunidad.comuna != '' && dataComunidad.region != '' && dataComunidad.nombreComunidad != '') {
+        const regex = new RegExp(dataComunidad.nombreComunidad, 'i');
+        comunidades = yield comunidadBDModel_1.Comunidad.find({ nombreComunidad: { $regex: regex },
+            region: dataComunidad.region,
+            comuna: dataComunidad.comuna })
+            .exec();
+    }
+    // comunidades = await Comunidad.find({region:reg})
+    //                              .exec();
+    response.json({
+        ok: true,
+        comunidades
+    });
+}));
 //exportamos el objeto para ocuparla en index
 exports.default = rutasComunidad;
