@@ -174,7 +174,7 @@ rutasUsuario.get('/comunidad',[verificaToken],  async (request: any, response: R
         comunidades
     });
 
-} )
+});
 
 //actualizar Token
 rutasUsuario.post('/updateToken' , (request: any, response: Response) =>
@@ -290,6 +290,19 @@ Usuario.findByIdAndUpdate(usuarioBD._id, dataUsuario, { new: true }, (err, usuar
     }
 });
     });
+});
+
+
+rutasUsuario.get('/arrayComunidad',[verificaToken],  async (request: any, response: Response) =>
+{
+    const comunidades = await Usuario.findById(request.usuario._id)                               
+                                     .select('comunidad')
+                                     .exec();
+    response.json({
+        ok: true,
+        comunidades
+    });
+
 });
 
 
