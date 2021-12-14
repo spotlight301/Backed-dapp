@@ -233,4 +233,13 @@ rutasUsuario.post('/abandonarComunidad', [autenticacion_1.verificaToken], (reque
         });
     });
 });
+rutasUsuario.get('/arrayComunidad', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const comunidades = yield usuarioBDModel_1.Usuario.findById(request.usuario._id)
+        .select('comunidad')
+        .exec();
+    response.json({
+        ok: true,
+        comunidades
+    });
+}));
 exports.default = rutasUsuario;
