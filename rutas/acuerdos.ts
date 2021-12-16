@@ -45,7 +45,7 @@ rutasAcuerdos.get('/', [verificaToken], async (request: any, response: Response)
     skip = skip * 10;
 
 
-    const acuerdosPublicados = await Acuerdos.find({comunidad: request.usuario.comunidad, estado: { "$in": [1, 2] }})
+    const acuerdosPublicados = await Acuerdos.find({comunidad: request.usuario.comunidad, estado: { "$in": [1, 2, 3] }})
                                              .sort({_id:-1})
                                              .skip(skip)
                                              .limit(10)
