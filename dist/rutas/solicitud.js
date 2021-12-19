@@ -63,7 +63,6 @@ rutasSolicitud.post('/crear', [autenticacion_1.verificaToken], (request, respons
     }
 }));
 rutasSolicitud.get('/', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    var tryx = "61af840b3cd0d082df63d6ca";
     const solicitudes = yield solicitudBDModel_1.Solicitud.find({ comunidad: request.usuario.comunidad })
         .populate("usuario", { nombre: 1 })
         .populate("comunidad", { nombreComunidad: 1 })
@@ -149,20 +148,16 @@ rutasSolicitud.post('/aceptar', (request, response) => {
             }); //fin deleteOne
         }); //fin actualizar usuario
     }); //fin findOne
-    // Solicitud.deleteOne({_id: request.body.idSolicitud}, (err: any, solicitudDeleted: any) =>
-    // {
-    //     if(err) throw err;
-    //     if(!solicitudDeleted)
-    //     {
-    //         return request.json({
-    //             ok: false,
-    //             mensaje:'no se elimino'
-    //         });
-    //     }
-    //     response.json({
-    //         ok: true
-    //     })
-    // })
 });
+rutasSolicitud.get('/length', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const solicitudes = yield solicitudBDModel_1.Solicitud.find({ comunidad: request.usuario.comunidad })
+        .populate("usuario", { nombre: 1 })
+        .populate("comunidad", { nombreComunidad: 1 })
+        .exec();
+    var length = solicitudes.length;
+    response.json({
+        length
+    });
+}));
 //exportamos el objeto para ocuparla en index
 exports.default = rutasSolicitud;

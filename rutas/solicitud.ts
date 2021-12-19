@@ -76,7 +76,6 @@ rutasSolicitud.post('/crear', [verificaToken], async (request: any, response: Re
 
 rutasSolicitud.get('/', [verificaToken], async (request: any, response: Response) =>
 {
-    var tryx = "61af840b3cd0d082df63d6ca"
     const solicitudes = await Solicitud.find({comunidad: request.usuario.comunidad})
                                  .populate("usuario",{nombre: 1})
                                  .populate("comunidad",{nombreComunidad: 1})
@@ -203,27 +202,21 @@ rutasSolicitud.post('/aceptar', (request:any, response: Response) =>
 
     }) //fin findOne
 
+});
 
-
+rutasSolicitud.get('/length', [verificaToken], async (request: any, response: Response) =>
+{
+    const solicitudes = await Solicitud.find({comunidad: request.usuario.comunidad})
+                                 .populate("usuario",{nombre: 1})
+                                 .populate("comunidad",{nombreComunidad: 1})
+                                 .exec();
     
+    var length = solicitudes.length;
+    
+    response.json({
+        length
+    });
 
-
-    // Solicitud.deleteOne({_id: request.body.idSolicitud}, (err: any, solicitudDeleted: any) =>
-    // {
-    //     if(err) throw err;
-
-    //     if(!solicitudDeleted)
-    //     {
-    //         return request.json({
-    //             ok: false,
-    //             mensaje:'no se elimino'
-    //         });
-    //     }
-
-    //     response.json({
-    //         ok: true
-    //     })
-    // })
 });
 
 
