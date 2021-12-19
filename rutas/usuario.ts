@@ -3,6 +3,7 @@ import { Usuario } from '../modelos/usuarioBDModel';
 import bcrypt from 'bcrypt';
 import Token from '../clases/token';
 import { verificaToken } from "../middlewares/autenticacion";
+import { Comunidad } from '../modelos/comunidadBDModel';
 
 //objeto que reconocera express para escribir en el URL direccione que usaremos
 const rutasUsuario = Router();
@@ -304,6 +305,86 @@ rutasUsuario.get('/arrayComunidad',[verificaToken],  async (request: any, respon
     });
 
 });
+
+
+rutasUsuario.get('/miembrosComunidad',[verificaToken], async  (request: any,  response: Response) =>
+{
+    const miembros =  await Usuario.find({comunidad: request.usuario.comunidad},{nombre: 1, comunidad:1, rol:1})                               
+                                   .exec();
+
+    const comBD = await Comunidad.findOne({_id: request.usuario.comunidad})
+                                 .exec();
+    response.json({
+        ok: true,
+        miembros,
+        comBD
+    });
+});
+
+
+
+rutasUsuario.post('/actualizarRol', (request: any,  response: Response) =>
+{
+    const dataUsuario = {
+        idUsuario: request.body.idUsuario,
+        idComunidad: request.body.idComunidad,
+        rol: request.body.rol
+    }
+
+    Usuario.findOne({_id: dataUsuario.idUsuario}, (err:any, usuarioBD:any) =>
+    {
+        if(err) throw err;
+        if(!usuarioBD)
+        {
+            return response.json({
+            ok: false,    
+            mensaje: 'ID incorrecta'
+            });
+        }
+
+        //inicializamos array en 0 para pasarle los valores y actualizarlos
+        var arrayComunidades = [];
+        var arrayRol = [];
+        arrayComunidades = usuarioBD.comunidad;
+        arrayRol = usuarioBD.rol;
+        let index = arrayComunidades.indexOf(dataUsuario.idComunidad);
+        arrayRol[index] = dataUsuario.rol;
+
+        const updateUser ={
+            _id: usuarioBD._id,
+            rol: arrayRol
+        }
+        Usuario.findByIdAndUpdate(dataUsuario.idUsuario, updateUser, {new:true}, (err, updatedBD) =>
+        {
+            if(err) throw err;
+
+            if(!updatedBD)
+            {
+                return request.json({
+                ok: false,
+                mensaje: 'Usuario no encontrado'
+                })
+            }
+
+            response.json({
+                ok:true,
+                })
+                
+
+
+
+        })//fin a findByIdAndUpdate
+
+
+        
+
+    }); //fin a findOne
+    
+    
+
+});
+
+
 
 
 

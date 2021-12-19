@@ -17,6 +17,7 @@ const usuarioBDModel_1 = require("../modelos/usuarioBDModel");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
+const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
 const rutasUsuario = (0, express_1.Router)();
 //function para autentificarse
@@ -242,4 +243,56 @@ rutasUsuario.get('/arrayComunidad', [autenticacion_1.verificaToken], (request, r
         comunidades
     });
 }));
+rutasUsuario.get('/miembrosComunidad', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const miembros = yield usuarioBDModel_1.Usuario.find({ comunidad: request.usuario.comunidad }, { nombre: 1, comunidad: 1, rol: 1 })
+        .exec();
+    const comBD = yield comunidadBDModel_1.Comunidad.findOne({ _id: request.usuario.comunidad })
+        .exec();
+    response.json({
+        ok: true,
+        miembros,
+        comBD
+    });
+}));
+rutasUsuario.post('/actualizarRol', (request, response) => {
+    const dataUsuario = {
+        idUsuario: request.body.idUsuario,
+        idComunidad: request.body.idComunidad,
+        rol: request.body.rol
+    };
+    usuarioBDModel_1.Usuario.findOne({ _id: dataUsuario.idUsuario }, (err, usuarioBD) => {
+        if (err)
+            throw err;
+        if (!usuarioBD) {
+            return response.json({
+                ok: false,
+                mensaje: 'ID incorrecta'
+            });
+        }
+        //inicializamos array en 0 para pasarle los valores y actualizarlos
+        var arrayComunidades = [];
+        var arrayRol = [];
+        arrayComunidades = usuarioBD.comunidad;
+        arrayRol = usuarioBD.rol;
+        let index = arrayComunidades.indexOf(dataUsuario.idComunidad);
+        arrayRol[index] = dataUsuario.rol;
+        const updateUser = {
+            _id: usuarioBD._id,
+            rol: arrayRol
+        };
+        usuarioBDModel_1.Usuario.findByIdAndUpdate(dataUsuario.idUsuario, updateUser, { new: true }, (err, updatedBD) => {
+            if (err)
+                throw err;
+            if (!updatedBD) {
+                return request.json({
+                    ok: false,
+                    mensaje: 'Usuario no encontrado'
+                });
+            }
+            response.json({
+                ok: true,
+            });
+        }); //fin a findByIdAndUpdate
+    }); //fin a findOne
+});
 exports.default = rutasUsuario;
