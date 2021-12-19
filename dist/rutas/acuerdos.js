@@ -43,7 +43,7 @@ rutasAcuerdos.get('/', [autenticacion_1.verificaToken], (request, response) => _
     let pagina = Number(request.query.pagina) || 1;
     let skip = pagina - 1;
     skip = skip * 10;
-    const acuerdosPublicados = yield acuerdosBDModel_1.Acuerdos.find({ comunidad: request.usuario.comunidad, estado: { "$in": [1, 2] } })
+    const acuerdosPublicados = yield acuerdosBDModel_1.Acuerdos.find({ comunidad: request.usuario.comunidad, estado: { "$in": [1, 2, 3] } })
         .sort({ _id: -1 })
         .skip(skip)
         .limit(10)

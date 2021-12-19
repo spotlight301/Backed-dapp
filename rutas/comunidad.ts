@@ -249,6 +249,34 @@ rutasComunidad.post('/buscar',  async (request: any,  response: Response) =>
 
 });
 
+rutasComunidad.get('/nombreComunidad' , [verificaToken], async (request:any, response: Response) =>
+{
+    // await Comunidad.findOne({_id: request.usuario.comunidad},  (err:any, comBD:any) =>
+    // {
+    //     if(err) throw err;
+
+    //     if(!comBD)
+    //     {
+    //         return response.json({
+    //             ok: false,
+    //             mensaje: 'Comunidad no encontrada'
+    //         });
+    //     }
+    //      response.json({
+    //         comBD
+    //     })
+    // })
+
+    const comBD = await Comunidad.findOne({_id: request.usuario.comunidad})
+                           .exec();
+
+    response.json({
+        ok: true,
+        comBD
+          });
+
+})
+
 
 
 //exportamos el objeto para ocuparla en index

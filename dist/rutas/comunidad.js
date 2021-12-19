@@ -174,5 +174,27 @@ rutasComunidad.post('/buscar', (request, response) => __awaiter(void 0, void 0, 
         comunidades
     });
 }));
+rutasComunidad.get('/nombreComunidad', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    // await Comunidad.findOne({_id: request.usuario.comunidad},  (err:any, comBD:any) =>
+    // {
+    //     if(err) throw err;
+    //     if(!comBD)
+    //     {
+    //         return response.json({
+    //             ok: false,
+    //             mensaje: 'Comunidad no encontrada'
+    //         });
+    //     }
+    //      response.json({
+    //         comBD
+    //     })
+    // })
+    const comBD = yield comunidadBDModel_1.Comunidad.findOne({ _id: request.usuario.comunidad })
+        .exec();
+    response.json({
+        ok: true,
+        comBD
+    });
+}));
 //exportamos el objeto para ocuparla en index
 exports.default = rutasComunidad;
