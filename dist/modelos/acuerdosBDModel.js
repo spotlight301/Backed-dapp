@@ -39,6 +39,10 @@ const estructuraAcuerdos = new mongoose_1.Schema({
                 type: Number
             }
         }],
+    votantes: [{
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Usuario'
+        }],
     usuario: {
         type: mongoose_1.Schema.Types.ObjectId,
         ref: 'Usuario'
@@ -53,4 +57,4 @@ const estructuraAcuerdos = new mongoose_1.Schema({
         type: Number
     }
 });
-exports.Acuerdos = (0, mongoose_1.model)('Acuerdos', estructuraAcuerdos);
+exports.Acuerdos = mongoose_1.model('Acuerdos', estructuraAcuerdos);

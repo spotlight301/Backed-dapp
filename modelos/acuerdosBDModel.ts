@@ -39,6 +39,10 @@ const estructuraAcuerdos = new Schema({
                 type: Number
             }
         }],
+        votantes:[{
+            type: Schema.Types.ObjectId,
+            ref: 'Usuario'
+        }],
         usuario: {
             type: Schema.Types.ObjectId,
             ref: 'Usuario'
@@ -65,6 +69,7 @@ interface IAcuerdos extends Document{
     fechaLanzada: number;
     imagenAcuerdo: string;
     opciones: IOpciones[];
+    votantes: string[];
     usuario: string;
     comunidad: string;
     estado: number;
