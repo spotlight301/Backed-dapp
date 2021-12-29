@@ -56,6 +56,7 @@ rutasUsuario.post('/login', (request, response) => {
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
+    //request.body.comunidad = '61cb35482aed3c07425bd8ce';
     request.body.rol = 2;
     const dataUsuario = {
         nombre: request.body.nombre,

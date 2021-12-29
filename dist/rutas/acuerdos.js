@@ -91,18 +91,49 @@ rutasAcuerdos.get('/imagenAcuerdo/:idUsuario/:imgAcuerdo', (request, response) =
 });
 //actualizar acuerdo
 rutasAcuerdos.post('/actualizar', [autenticacion_1.verificaToken], (request, response) => {
-    const dataAcuerdo = {
-        titulo: request.body.titulo,
-        descripcion: request.body.descripcion,
-        fecha: request.body.fecha,
-        hora: request.body.hora,
-        duracion: request.body.duracion,
-        fechaLanzada: request.body.fechaLanzada,
-        imagenAcuerdo: request.body.imagenAcuerdo,
-        opciones: request.body.opciones,
-        votantes: request.body.votantes,
-        estado: request.body.estado
-    };
+    const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
+    var dataAcuerdo = {};
+    /*  const dataAcuerdo = {
+        
+         titulo: request.body.titulo,
+         descripcion: request.body.descripcion,
+         fecha: request.body.fecha,
+         hora: request.body.hora,
+         duracion: request.body.duracion,
+         fechaLanzada: request.body.fechaLanzada,
+         imagenAcuerdo: request.body.imagenAcuerdo || imagenes,
+         opciones: request.body.opciones,
+         votantes: request.body.votantes,
+         estado: request.body.estado
+     } */
+    if (imagenes[0] != null) {
+        dataAcuerdo =
+            {
+                titulo: request.body.titulo,
+                descripcion: request.body.descripcion,
+                fecha: request.body.fecha,
+                hora: request.body.hora,
+                duracion: request.body.duracion,
+                fechaLanzada: request.body.fechaLanzada,
+                imagenAcuerdo: imagenes,
+                opciones: request.body.opciones,
+                votantes: request.body.votantes,
+                estado: request.body.estado
+            };
+    }
+    else {
+        dataAcuerdo = {
+            titulo: request.body.titulo,
+            descripcion: request.body.descripcion,
+            fecha: request.body.fecha,
+            hora: request.body.hora,
+            duracion: request.body.duracion,
+            fechaLanzada: request.body.fechaLanzada,
+            opciones: request.body.opciones,
+            votantes: request.body.votantes,
+            estado: request.body.estado
+        };
+    }
     acuerdosBDModel_1.Acuerdos.findByIdAndUpdate(request.body._id, dataAcuerdo, { new: true }, (err, acuerdoDB) => {
         if (err)
             throw err;

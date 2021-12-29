@@ -113,8 +113,12 @@ rutasAcuerdos.get('/imagenAcuerdo/:idUsuario/:imgAcuerdo', (request: any, respon
 
 //actualizar acuerdo
 rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Response) => {
-        
-    const dataAcuerdo = {
+
+    const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
+
+    var dataAcuerdo = {};
+
+   /*  const dataAcuerdo = {
        
         titulo: request.body.titulo,
         descripcion: request.body.descripcion,
@@ -122,10 +126,44 @@ rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Respo
         hora: request.body.hora,
         duracion: request.body.duracion,
         fechaLanzada: request.body.fechaLanzada,
-        imagenAcuerdo: request.body.imagenAcuerdo,
+        imagenAcuerdo: request.body.imagenAcuerdo || imagenes,
         opciones: request.body.opciones,
         votantes: request.body.votantes,
         estado: request.body.estado
+    } */
+
+    if(imagenes[0] != null)
+    {
+        dataAcuerdo =
+        {
+            titulo: request.body.titulo,
+            descripcion: request.body.descripcion,
+            fecha: request.body.fecha,
+            hora: request.body.hora,
+            duracion: request.body.duracion,
+            fechaLanzada: request.body.fechaLanzada,
+            imagenAcuerdo: imagenes,
+            opciones: request.body.opciones,
+            votantes: request.body.votantes,
+            estado: request.body.estado
+        }
+    }
+    else{
+        dataAcuerdo ={
+
+            titulo: request.body.titulo,
+            descripcion: request.body.descripcion,
+            fecha: request.body.fecha,
+            hora: request.body.hora,
+            duracion: request.body.duracion,
+            fechaLanzada: request.body.fechaLanzada,
+            opciones: request.body.opciones,
+            votantes: request.body.votantes,
+            estado: request.body.estado
+            
+   
+        }
+
     }
 
     Acuerdos.findByIdAndUpdate(request.body._id, dataAcuerdo, {new: true}, (err, acuerdoDB) =>{
