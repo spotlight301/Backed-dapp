@@ -19,7 +19,7 @@ const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
-const rutasUsuario = express_1.Router();
+const rutasUsuario = (0, express_1.Router)();
 //function para autentificarse
 rutasUsuario.post('/login', (request, response) => {
     usuarioBDModel_1.Usuario.findOne({ email: request.body.email }, (err, usuarioBD) => {
@@ -117,10 +117,6 @@ rutasUsuario.post('/actualizar', autenticacion_1.verificaToken, (request, respon
             token: Usuariotoken
         });
     });
-    // response.json({
-    //     ok: true,
-    //     usuario: request.usuario
-    // })
 });
 rutasUsuario.get('/', [autenticacion_1.verificaToken], (request, response) => {
     const usuario = request.usuario;
@@ -295,5 +291,38 @@ rutasUsuario.post('/actualizarRol', (request, response) => {
             });
         }); //fin a findByIdAndUpdate
     }); //fin a findOne
-});
+}); //fin actualizar usuario
+//Funcion que consulta a la base de datos el rol del usuario segun la comunidad
+//que se encuentre en el Token
+rutasUsuario.get('/obtenerRol', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    usuarioBDModel_1.Usuario.findById(request.usuario._id, { rol: 1, comunidad: 1 }, (err, usuarioBD) => {
+        var arrayComunidades = [];
+        var arrayRol = [];
+        var currentRol;
+        arrayComunidades = usuarioBD.comunidad;
+        arrayRol = usuarioBD.rol;
+        let index = arrayComunidades.indexOf(request.usuario.comunidad);
+        currentRol = arrayRol[index];
+        response.json({
+            currentRol
+        });
+    }); //fin a findById
+}));
+//Funcion que nos muestra los datos personales del usuario
+rutasUsuario.get('/mostrarDatos', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    usuarioBDModel_1.Usuario.findById(request.usuario._id, { nombre: 1, fechaNacimiento: 1, email: 1, imagenPerfil: 1 }, (err, usuarioBD) => {
+        response.json({
+            usuarioBD
+        });
+    }); //fin a findById
+}));
+//Funcion que nos devuelve el array de comunidades y rol para validar la creacion del aviso
+//en distintas partes de la app
+rutasUsuario.get('/validarCrearAviso', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    usuarioBDModel_1.Usuario.findById(request.usuario._id, { comunidad: 1, rol: 1 }, (err, usuarioBD) => {
+        response.json({
+            usuarioBD
+        });
+    }); //fin a findById
+}));
 exports.default = rutasUsuario;

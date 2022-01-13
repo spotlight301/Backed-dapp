@@ -57,4 +57,4 @@ const estructuraAcuerdos = new mongoose_1.Schema({
         type: Number
     }
 });
-exports.Acuerdos = mongoose_1.model('Acuerdos', estructuraAcuerdos);
+exports.Acuerdos = (0, mongoose_1.model)('Acuerdos', estructuraAcuerdos);
