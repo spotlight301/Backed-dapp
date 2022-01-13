@@ -144,13 +144,6 @@ rutasUsuario.post('/actualizar', verificaToken,(request: any, response: Response
 
 
     });
-    // response.json({
-    //     ok: true,
-    //     usuario: request.usuario
-    // })
-    
-
-    
 
 });
 
@@ -370,20 +363,62 @@ rutasUsuario.post('/actualizarRol', (request: any,  response: Response) =>
             response.json({
                 ok:true,
                 })
-                
-
-
-
         })//fin a findByIdAndUpdate
-
-
-        
 
     }); //fin a findOne
     
-    
+}); //fin actualizar usuario
 
+//Funcion que consulta a la base de datos el rol del usuario segun la comunidad
+//que se encuentre en el Token
+rutasUsuario.get('/obtenerRol',[verificaToken],  async (request: any, response: Response) =>
+{
+    Usuario.findById(request.usuario._id, {rol:1, comunidad: 1}, (err:any, usuarioBD:any) =>
+    {
+        var arrayComunidades = [];
+        var arrayRol = [];
+        var currentRol;
+        arrayComunidades = usuarioBD.comunidad;
+        arrayRol = usuarioBD.rol;
+        let index = arrayComunidades.indexOf(request.usuario.comunidad);
+        currentRol = arrayRol[index];
+        response.json({
+            currentRol
+        });
+    }) //fin a findById
+                                 
 });
+
+
+//Funcion que nos muestra los datos personales del usuario
+rutasUsuario.get('/mostrarDatos',[verificaToken],  async (request: any, response: Response) =>
+{
+    Usuario.findById(request.usuario._id, {nombre:1, fechaNacimiento:1, email:1, imagenPerfil:1}, (err:any, usuarioBD:any) =>
+    {
+        
+        response.json({
+            usuarioBD
+        });
+    }) //fin a findById
+                                 
+});
+
+//Funcion que nos devuelve el array de comunidades y rol para validar la creacion del aviso
+//en distintas partes de la app
+rutasUsuario.get('/validarCrearAviso',[verificaToken],  async (request: any, response: Response) =>
+{
+    Usuario.findById(request.usuario._id, {comunidad:1, rol:1}, (err:any, usuarioBD:any) =>
+    {
+        
+        response.json({
+            usuarioBD
+        });
+    }) //fin a findById
+                                 
+});
+
+
+
 
 
 

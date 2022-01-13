@@ -205,7 +205,7 @@ rutasComunidad.post('/buscar',  async (request: any,  response: Response) =>
                                      .exec();
     }
     //si solo viene region
-    if (dataComunidad.comuna == '' && dataComunidad.nombreComunidad == '')
+    if (dataComunidad.comuna == '' && dataComunidad.nombreComunidad == '' && dataComunidad.region != '')
     {
         comunidades = await Comunidad.find({region: dataComunidad.region})
                                      .exec();
@@ -227,6 +227,15 @@ rutasComunidad.post('/buscar',  async (request: any,  response: Response) =>
         comunidades = await Comunidad.find({ nombreComunidad: {$regex: regex}
                                             ,region: dataComunidad.region,
                                             comuna: dataComunidad.comuna})                           
+                                     .exec();
+    }
+
+    //si solo viene nombre y region
+    if( dataComunidad.region != '' && dataComunidad.nombreComunidad != '' && dataComunidad.comuna == '' )
+    {
+        const regex = new RegExp(dataComunidad.nombreComunidad, 'i'); 
+        comunidades = await Comunidad.find({ nombreComunidad: {$regex: regex}
+                                            ,region: dataComunidad.region})                           
                                      .exec();
     }
     

@@ -14,7 +14,7 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 const usuarioBDModel_1 = require("../modelos/usuarioBDModel");
 //crearemos el objeto con el cual realizaremos las peticiones
-const rutasComunidad = express_1.Router();
+const rutasComunidad = (0, express_1.Router)();
 //crear una comunidad
 rutasComunidad.post('/crear', (request, response) => {
     //llenamos el objeto que crearemos comunidad
@@ -149,7 +149,7 @@ rutasComunidad.post('/buscar', (request, response) => __awaiter(void 0, void 0, 
             .exec();
     }
     //si solo viene region
-    if (dataComunidad.comuna == '' && dataComunidad.nombreComunidad == '') {
+    if (dataComunidad.comuna == '' && dataComunidad.nombreComunidad == '' && dataComunidad.region != '') {
         comunidades = yield comunidadBDModel_1.Comunidad.find({ region: dataComunidad.region })
             .exec();
     }
@@ -165,6 +165,13 @@ rutasComunidad.post('/buscar', (request, response) => __awaiter(void 0, void 0, 
         comunidades = yield comunidadBDModel_1.Comunidad.find({ nombreComunidad: { $regex: regex },
             region: dataComunidad.region,
             comuna: dataComunidad.comuna })
+            .exec();
+    }
+    //si solo viene nombre y region
+    if (dataComunidad.region != '' && dataComunidad.nombreComunidad != '' && dataComunidad.comuna == '') {
+        const regex = new RegExp(dataComunidad.nombreComunidad, 'i');
+        comunidades = yield comunidadBDModel_1.Comunidad.find({ nombreComunidad: { $regex: regex },
+            region: dataComunidad.region })
             .exec();
     }
     // comunidades = await Comunidad.find({region:reg})

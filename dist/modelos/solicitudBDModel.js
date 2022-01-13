@@ -17,4 +17,4 @@ const estructuraSolicitud = new mongoose_1.Schema({
         type: String
     }
 });
-exports.Solicitud = mongoose_1.model('Solicitud', estructuraSolicitud);
+exports.Solicitud = (0, mongoose_1.model)('Solicitud', estructuraSolicitud);

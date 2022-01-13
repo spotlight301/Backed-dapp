@@ -14,7 +14,7 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const solicitudBDModel_1 = require("../modelos/solicitudBDModel");
 const usuarioBDModel_1 = require("../modelos/usuarioBDModel");
 //crearemos el objeto con el cual realizaremos las peticiones
-const rutasSolicitud = express_1.Router();
+const rutasSolicitud = (0, express_1.Router)();
 //crear una solicitud
 rutasSolicitud.post('/crear', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     const dataSolicitud = {
