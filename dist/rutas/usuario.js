@@ -19,7 +19,7 @@ const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
-const rutasUsuario = (0, express_1.Router)();
+const rutasUsuario = express_1.Router();
 //function para autentificarse
 rutasUsuario.post('/login', (request, response) => {
     usuarioBDModel_1.Usuario.findOne({ email: request.body.email }, (err, usuarioBD) => {
@@ -249,6 +249,15 @@ rutasUsuario.get('/miembrosComunidad', [autenticacion_1.verificaToken], (request
         ok: true,
         miembros,
         comBD
+    });
+}));
+//Funcion que retorna un array con las Id de los miembros de una comunidad
+rutasUsuario.get('/arrayMiembrosComunidad', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const miembros = yield usuarioBDModel_1.Usuario.find({ comunidad: request.usuario.comunidad }, { nombre: 1, comunidad: 1, rol: 1 })
+        .exec();
+    response.json({
+        ok: true,
+        miembros
     });
 }));
 rutasUsuario.post('/actualizarRol', (request, response) => {
