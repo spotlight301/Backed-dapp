@@ -253,7 +253,7 @@ rutasUsuario.get('/miembrosComunidad', [autenticacion_1.verificaToken], (request
 }));
 //Funcion que retorna un array con las Id de los miembros de una comunidad
 rutasUsuario.get('/arrayMiembrosComunidad', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
-    const miembros = yield usuarioBDModel_1.Usuario.find({ comunidad: request.usuario.comunidad }, { nombre: 1, comunidad: 1, rol: 1 })
+    const miembros = yield usuarioBDModel_1.Usuario.find({ comunidad: request.usuario.comunidad }, { _id: 1 })
         .exec();
     response.json({
         ok: true,

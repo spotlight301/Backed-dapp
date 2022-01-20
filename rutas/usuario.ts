@@ -318,7 +318,7 @@ rutasUsuario.get('/miembrosComunidad',[verificaToken], async  (request: any,  re
 //Funcion que retorna un array con las Id de los miembros de una comunidad
 rutasUsuario.get('/arrayMiembrosComunidad',[verificaToken], async  (request: any,  response: Response) =>
 {
-    const miembros =  await Usuario.find({comunidad: request.usuario.comunidad},{nombre: 1, comunidad:1, rol:1})                               
+    const miembros =  await Usuario.find({comunidad: request.usuario.comunidad},{_id:1})                               
                                    .exec();
     
     response.json({
