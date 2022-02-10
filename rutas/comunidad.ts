@@ -23,7 +23,7 @@ rutasComunidad.post('/crear', (request: any, response: Response) =>
               });
      }
  
-     var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+     var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
      if(caracteres2.test(request.body.descripcion) == false)
      {
          return response.json({
@@ -191,7 +191,7 @@ rutasComunidad.post('/crearDefault',  (request: any, response: Response) =>
 rutasComunidad.post('/actualizar', (request: any, response: Response) =>
 {
      //INICIO VALIDACIONES BACKEND
-     var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+     var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
 
      if(caracteres.test(request.body.nombreComunidad) == false)
      {
@@ -201,7 +201,7 @@ rutasComunidad.post('/actualizar', (request: any, response: Response) =>
               });
      }
  
-     var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+     var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
      if(caracteres2.test(request.body.descripcion) == false)
      {
          return response.json({
@@ -269,7 +269,7 @@ rutasComunidad.post('/buscar',  async (request: any,  response: Response) =>
     if(dataComunidad.nombreComunidad != '')
     {
         //INICIO VALIDACIONES BACKEND
-        var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+        var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
 
         if(caracteres.test(request.body.nombreComunidad) == false)
         {
