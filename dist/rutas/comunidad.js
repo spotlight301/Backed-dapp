@@ -14,9 +14,37 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 const usuarioBDModel_1 = require("../modelos/usuarioBDModel");
 //crearemos el objeto con el cual realizaremos las peticiones
-const rutasComunidad = express_1.Router();
+const rutasComunidad = (0, express_1.Router)();
 //crear una comunidad
 rutasComunidad.post('/crear', (request, response) => {
+    //INICIO VALIDACIONES BACKEND
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres.test(request.body.nombreComunidad) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en título'
+        });
+    }
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres2.test(request.body.descripcion) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en descripción'
+        });
+    }
+    if (request.body.nombreComunidad.length > 30 || request.body.nombreComunidad.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en título'
+        });
+    }
+    if (request.body.descripcion.length > 250 || request.body.descripcion.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en descripción'
+        });
+    }
+    //FIN VALIDACIONES BACKEND
     //llenamos el objeto que crearemos comunidad
     const dataComunidad = {
         nombreComunidad: request.body.nombreComunidad,
@@ -112,6 +140,34 @@ rutasComunidad.post('/crearDefault', (request, response) => {
     });
 });
 rutasComunidad.post('/actualizar', (request, response) => {
+    //INICIO VALIDACIONES BACKEND
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres.test(request.body.nombreComunidad) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en título'
+        });
+    }
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres2.test(request.body.descripcion) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en descripción'
+        });
+    }
+    if (request.body.nombreComunidad.length > 30 || request.body.nombreComunidad.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en título'
+        });
+    }
+    if (request.body.descripcion.length > 250 || request.body.descripcion.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en descripción'
+        });
+    }
+    //FIN VALIDACIONES BACKEND
     const dataComunidad = {
         nombreComunidad: request.body.nombreComunidad,
         descripcion: request.body.descripcion,
@@ -141,6 +197,23 @@ rutasComunidad.post('/buscar', (request, response) => __awaiter(void 0, void 0, 
         region: request.body.region,
         comuna: request.body.comuna,
     };
+    if (dataComunidad.nombreComunidad != '') {
+        //INICIO VALIDACIONES BACKEND
+        var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+        if (caracteres.test(request.body.nombreComunidad) == false) {
+            return response.json({
+                ok: false,
+                mensaje: 'Caracteres invalidos en título'
+            });
+        }
+        if (request.body.nombreComunidad.length > 30) {
+            return response.json({
+                ok: false,
+                mensaje: 'Error en título'
+            });
+        }
+        //FIN VALIDACIONES BACKEND
+    }
     var comunidades = {};
     //si solo viene el nombre
     if (dataComunidad.nombreComunidad != '' && dataComunidad.comuna == '' && dataComunidad.region == '') {

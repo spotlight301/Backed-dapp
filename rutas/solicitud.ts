@@ -9,6 +9,26 @@ const rutasSolicitud = Router();
 //crear una solicitud
 rutasSolicitud.post('/crear', [verificaToken], async (request: any, response: Response) =>
 {
+    //INICIO VALIDACIONES BACKEND
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+
+    if(caracteres.test(request.body.mensaje) == false)
+    {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en mensaje'
+         });
+    }
+
+    if(request.body.mensaje.length > 250 )
+ {
+     return response.json({
+         ok: false,
+         mensaje: 'Error en título'
+          });
+ }
+
+//FIN VALIDACIONES BACKEND
 
     const dataSolicitud = {
         usuario: request.usuario._id,

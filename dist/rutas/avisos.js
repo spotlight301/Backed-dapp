@@ -17,7 +17,7 @@ const autenticacion_1 = require("../middlewares/autenticacion");
 const avisosBDModel_1 = require("../modelos/avisosBDModel");
 const file_system_1 = __importDefault(require("../clases/file-system"));
 const fileSystem = new file_system_1.default();
-const rutasAvisos = express_1.Router();
+const rutasAvisos = (0, express_1.Router)();
 //crear un nuevo aviso
 rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
     //la constante body almacenara el contenido que se envia desde la pagina al servidor
@@ -28,6 +28,34 @@ rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
     //body.Miembro.comunidad = 'test3';
     const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
     body.imagenAviso = imagenes;
+    //INICIO VALIDACIONES BACKEND
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres.test(body.titulo) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en título'
+        });
+    }
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres2.test(body.descripcion) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en descripción'
+        });
+    }
+    if (body.titulo.length > 30 || body.titulo.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en título'
+        });
+    }
+    if (body.descripcion.length > 250 || body.descripcion.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en descripción'
+        });
+    }
+    //FIN VALIDACIONES BACKEND
     //a través de create se nos inserta la informacion en la BD
     avisosBDModel_1.Avisos.create(body).then((avisosBD) => __awaiter(void 0, void 0, void 0, function* () {
         //avisosBD.populate('usuario').execPopulate();
@@ -126,6 +154,34 @@ rutasAvisos.get('/usuario', [autenticacion_1.verificaToken], (request, response)
 }));
 //actualizarLAinformacion de un aviso publicado por un usuario
 rutasAvisos.post('/actualizar', [autenticacion_1.verificaToken], (request, response) => {
+    //INICIO VALIDACIONES BACKEND
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres.test(request.body.titulo) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en título'
+        });
+    }
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    if (caracteres2.test(request.body.descripcion) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Caracteres invalidos en descripción'
+        });
+    }
+    if (request.body.titulo.length > 30 || request.body.titulo.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en título'
+        });
+    }
+    if (request.body.descripcion.length > 250 || request.body.descripcion.length <= 2) {
+        return response.json({
+            ok: false,
+            mensaje: 'Error en descripción'
+        });
+    }
+    //FIN VALIDACIONES BACKEND
     const imagenes = fileSystem.imagenesTempHaciaAvisos(request.usuario._id);
     var updatedAviso = {};
     if (imagenes[0] != null) {
