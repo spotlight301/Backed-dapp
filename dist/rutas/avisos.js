@@ -36,7 +36,7 @@ rutasAvisos.post('/', [autenticacion_1.verificaToken], (request, response) => {
             mensaje: 'Caracteres invalidos en título'
         });
     }
-    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if (caracteres2.test(body.descripcion) == false) {
         return response.json({
             ok: false,
@@ -162,7 +162,7 @@ rutasAvisos.post('/actualizar', [autenticacion_1.verificaToken], (request, respo
             mensaje: 'Caracteres invalidos en título'
         });
     }
-    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if (caracteres2.test(request.body.descripcion) == false) {
         return response.json({
             ok: false,

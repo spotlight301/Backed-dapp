@@ -18,7 +18,7 @@ const rutasSolicitud = (0, express_1.Router)();
 //crear una solicitud
 rutasSolicitud.post('/crear', [autenticacion_1.verificaToken], (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     //INICIO VALIDACIONES BACKEND
-    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if (caracteres.test(request.body.mensaje) == false) {
         return response.json({
             ok: false,

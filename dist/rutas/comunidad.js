@@ -25,7 +25,7 @@ rutasComunidad.post('/crear', (request, response) => {
             mensaje: 'Caracteres invalidos en título'
         });
     }
-    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if (caracteres2.test(request.body.descripcion) == false) {
         return response.json({
             ok: false,
@@ -141,14 +141,14 @@ rutasComunidad.post('/crearDefault', (request, response) => {
 });
 rutasComunidad.post('/actualizar', (request, response) => {
     //INICIO VALIDACIONES BACKEND
-    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if (caracteres.test(request.body.nombreComunidad) == false) {
         return response.json({
             ok: false,
             mensaje: 'Caracteres invalidos en título'
         });
     }
-    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if (caracteres2.test(request.body.descripcion) == false) {
         return response.json({
             ok: false,
@@ -199,7 +199,7 @@ rutasComunidad.post('/buscar', (request, response) => __awaiter(void 0, void 0, 
     };
     if (dataComunidad.nombreComunidad != '') {
         //INICIO VALIDACIONES BACKEND
-        var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+        var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
         if (caracteres.test(request.body.nombreComunidad) == false) {
             return response.json({
                 ok: false,

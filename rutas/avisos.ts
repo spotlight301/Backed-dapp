@@ -34,7 +34,7 @@ rutasAvisos.post('/', [verificaToken], (request: any, response: Response) =>
              });
     }
 
-    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if(caracteres2.test(body.descripcion) == false)
     {
         return response.json({
@@ -205,7 +205,7 @@ rutasAvisos.get('/usuario',[verificaToken], async (request: any, response: Respo
              });
     }
 
-    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,50})+$/g;
+    var caracteres2 = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ0-9¡!?¿@-_.,/()= ]{1,250})+$/g;
     if(caracteres2.test(request.body.descripcion) == false)
     {
         return response.json({
