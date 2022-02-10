@@ -45,4 +45,4 @@ estructuraAvisos.pre('save', function (next) {
     //this.fechaCreacion = new Date();
     next();
 });
-exports.Avisos = mongoose_1.model('Avisos', estructuraAvisos);
+exports.Avisos = (0, mongoose_1.model)('Avisos', estructuraAvisos);
