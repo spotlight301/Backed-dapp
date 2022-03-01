@@ -19,9 +19,22 @@ const token_1 = __importDefault(require("../clases/token"));
 const autenticacion_1 = require("../middlewares/autenticacion");
 const comunidadBDModel_1 = require("../modelos/comunidadBDModel");
 //objeto que reconocera express para escribir en el URL direccione que usaremos
-const rutasUsuario = (0, express_1.Router)();
+const rutasUsuario = express_1.Router();
 //function para autentificarse
 rutasUsuario.post('/login', (request, response) => {
+    //Validaciones
+    if (request.body.email == "") {
+        return response.json({
+            ok: false,
+            mensaje: 'Correo requerido.'
+        });
+    }
+    if (request.body.password == "") {
+        return response.json({
+            ok: false,
+            mensaje: 'Contraseña requerida.'
+        });
+    }
     usuarioBDModel_1.Usuario.findOne({ email: request.body.email }, (err, usuarioBD) => {
         if (err)
             throw err;
@@ -55,6 +68,61 @@ rutasUsuario.post('/login', (request, response) => {
 });
 //function para crear un usuario
 rutasUsuario.post('/crear', (request, response) => {
+    //Validaciones
+    //Validación caracteres extraños en nombre
+    var caracteres = /(^[A-Za-zÁÉÍÓÚáéíóúñÑ ]{3,50})+$/g;
+    if (caracteres.test(request.body.nombre) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'El nombre de usuario no permite tener los caracteres ingresados. Con un mínimo de 3 caracteres y un máximo de 50.'
+        });
+    }
+    console.log(request.body.fechaNacimiento);
+    if (request.body.fechaNacimiento == null) {
+        return response.json({
+            ok: false,
+            mensaje: 'Debe seleccionar un día'
+        });
+    }
+    const today = new Date();
+    //Validar que la fecha no sea mayor a la fecha actual
+    if (request.body.fechaNacimiento > today.toISOString()) {
+        return response.json({
+            ok: false,
+            mensaje: 'El día seleccionado no debe ser mayor a la fecha actual.'
+        });
+    }
+    //Validación de correo
+    var correo = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if (correo.test(request.body.email) == false) {
+        return response.json({
+            ok: false,
+            mensaje: 'Debe ingresar un correo valido.'
+        });
+    }
+    if (request.body.email.length > 150) {
+        return response.json({
+            ok: false,
+            mensaje: 'El correo electrónico no puede tener más de 150 caracteres.'
+        });
+    }
+    if (request.body.password.length < 6) {
+        return response.json({
+            ok: false,
+            mensaje: 'La contraseña no puede tener menos de 6 caracteres.'
+        });
+    }
+    if (request.body.password.length > 100) {
+        return response.json({
+            ok: false,
+            mensaje: 'La contraseña no puede tener más de 100 caracteres.'
+        });
+    }
+    //Validación de contraseñas
+    /* if(this.repitaPassword != request.body.password){
+
+      return this.alertasService.alerta('Las contraseñas no coinciden.');
+    } */
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
     //request.body.comunidad = '61cb35482aed3c07425bd8ce';
     request.body.rol = 2;
