@@ -40,30 +40,22 @@ rutasAcuerdos.post('/', [verificaToken], (request: any, response: Response) => {
             mensaje: 'Debe seleccionar un día'
         });
     }
-    /* var currentDateObj = new Date();
-    var numberOfMlSeconds = currentDateObj.getTime();
-    var addMlSeconds = 180 * 60000;
-    var newDateObj = new Date(numberOfMlSeconds - addMlSeconds);
-    console.log(newDateObj); */
-      
-    //const today = new Date();
-    const yesterday = new Date();
-    console.log(yesterday);
-    yesterday.setDate(yesterday.getDate() - 2);
-    console.log(yesterday);
-    console.log(body.fecha);
 
+    /* El método getTimezoneOffset() devuelve la diferencia, 
+    en minutos, entre una fecha evaluada en la zona horaria UTC y 
+    la misma fecha evaluada en la zona horaria local. 
+    Luego se multiplican los minutos por 60000 obteniedo la diferencia horaria en milisegundos */
+    var diferenciaZonaHorariaLocal = (new Date()).getTimezoneOffset() * 60000;
+    var today = (new Date(Date.now() - diferenciaZonaHorariaLocal)).toISOString().slice(0, -14);
     
     //Validar que la fecha no sea anterior a la fecha actual
-    if(body.fecha < yesterday.toISOString()){
+    if(body.fecha < today){
         return response.json({
             ok: false,
             mensaje: 'El día seleccionado no debe ser anterior a la fecha actual'
         });
     }
-    //var fechaMaxima = new Date('2126-01-01').toISOString(); 
-    /* console.log(new Date('2122-03-07').toISOString());
-    console.log(body.fecha); */
+
     //Validar que la fecha no sea superior a 31/12/2125
     if(body.fecha > new Date('2122-03-07').toISOString()){
 
@@ -311,8 +303,6 @@ rutasAcuerdos.get('/imagenAcuerdo/:idUsuario/:imgAcuerdo', (request: any, respon
 
 });
 
-
-
 //actualizar acuerdo
 rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Response) => {
     //Validaciones
@@ -337,20 +327,22 @@ rutasAcuerdos.post('/actualizar', [verificaToken],(request: any, response: Respo
         });
     }
       
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 2);
+    /* El método getTimezoneOffset() devuelve la diferencia, 
+    en minutos, entre una fecha evaluada en la zona horaria UTC y 
+    la misma fecha evaluada en la zona horaria local. 
+    Luego se multiplican los minutos por 60000 obteniedo la diferencia horaria en milisegundos */
+    var diferenciaZonaHorariaLocal = (new Date()).getTimezoneOffset() * 60000;
+    var today = (new Date(Date.now() - diferenciaZonaHorariaLocal)).toISOString().slice(0, -14);
     
     //Validar que la fecha no sea anterior a la fecha actual
-    if(request.body.fecha < yesterday.toISOString()){
+    if(request.body.fecha < today){
         return response.json({
             ok: false,
             mensaje: 'El día seleccionado no debe ser anterior a la fecha actual'
         });
     }
-    //var fechaMaxima = new Date('2126-01-01').toISOString(); 
-    console.log(new Date('2122-03-07').toISOString());
-    console.log(request.body.fecha);
-    //Validar que la fecha no sea superior a 31/12/2125
+
+    //Validar que la fecha no sea superior a 07/03/2122
     if(request.body.fecha > new Date('2122-03-07').toISOString()){
 
         return response.json({
