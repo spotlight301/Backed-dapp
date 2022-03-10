@@ -77,16 +77,20 @@ rutasUsuario.post('/crear', (request, response) => {
             mensaje: 'El nombre de usuario no permite tener los caracteres ingresados. Con un mínimo de 3 caracteres y un máximo de 50.'
         });
     }
-    console.log(request.body.fechaNacimiento);
     if (request.body.fechaNacimiento == null) {
         return response.json({
             ok: false,
             mensaje: 'Debe seleccionar un día'
         });
     }
-    const today = new Date();
+    /* El método getTimezoneOffset() devuelve la diferencia,
+    en minutos, entre una fecha evaluada en la zona horaria UTC y
+    la misma fecha evaluada en la zona horaria local.
+    Luego se multiplican los minutos por 60000 obteniedo la diferencia horaria en milisegundos */
+    var diferenciaZonaHorariaLocal = (new Date()).getTimezoneOffset() * 60000;
+    var today = (new Date(Date.now() - diferenciaZonaHorariaLocal)).toISOString().slice(0, -14);
     //Validar que la fecha no sea mayor a la fecha actual
-    if (request.body.fechaNacimiento > today.toISOString()) {
+    if (request.body.fechaNacimiento > today) {
         return response.json({
             ok: false,
             mensaje: 'El día seleccionado no debe ser mayor a la fecha actual.'
@@ -118,11 +122,6 @@ rutasUsuario.post('/crear', (request, response) => {
             mensaje: 'La contraseña no puede tener más de 100 caracteres.'
         });
     }
-    //Validación de contraseñas
-    /* if(this.repitaPassword != request.body.password){
-
-      return this.alertasService.alerta('Las contraseñas no coinciden.');
-    } */
     request.body.comunidad = '61ac3ce9c27143f6fe782cf0';
     //request.body.comunidad = '61cb35482aed3c07425bd8ce';
     request.body.rol = 2;
