@@ -37,14 +37,14 @@ servidor.app.use('/solicitud', rutasSolicitud);
 
 
 //conexion a base de datos de verdad
-mongoose.connect('mongodb+srv://veciUser:veciPass-1x7@vecired.6lbpq.mongodb.net/veciRed?retryWrites=true&w=majority',
+mongoose.connect('string_de_conexion',
                 (err) => 
                 {
                     if(err) throw err;
                     console.log("Conectado exitosamente a BD1");
                 })
 
-//mongo "mongodb://vecired-shard-00-00.6lbpq.mongodb.net:27017,vecired-shard-00-01.6lbpq.mongodb.net:27017,vecired-shard-00-02.6lbpq.mongodb.net:27017/veciRed?replicaSet=atlas-88bqpg-shard-0" --ssl --authenticationDatabase admin --username veciUser --password veciPass-1x7
+
 
 //conecion a base de dato local
 // mongoose.connect('mongodb://localhost:27017/veciRed',
